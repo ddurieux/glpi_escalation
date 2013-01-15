@@ -23,7 +23,7 @@
    GNU Affero General Public License for more details.
 
    You should have received a copy of the GNU Affero General Public License
-   along with Behaviors. If not, see <http://www.gnu.org/licenses/>.
+   along with Escalation. If not, see <http://www.gnu.org/licenses/>.
 
    ------------------------------------------------------------------------
 
@@ -51,22 +51,14 @@ Html::header("escalation",$_SERVER["PHP_SELF"], "plugins",
 if (isset($_POST['update']) AND $_POST['group_assign'] > 0) {
    $assign_ticket_right = $_SESSION['glpiactiveprofile']['assign_ticket'];
    $_SESSION['glpiactiveprofile']['assign_ticket'] = 1;
-   // delete group
-      $group_ticket = new Group_Ticket();
 
-      $a_groups = $group_ticket->find("`tickets_id`='".$_POST['tickets_id']."'
-         AND `type`='2'");
-      foreach ($a_groups as $data) {      
-         $group_ticket->delete($data);
-         Event::log($_POST['tickets_id'], "ticket", 4, "tracking",
-                    $_SESSION["glpiname"]." ".$LANG['log'][122]);
-      }
       
    // Add group
       $ticket = new Ticket();
       $input = array();
       $input['id'] = $_POST['tickets_id'];
       $input['_itil_assign'] = array('_type'=>'group','groups_id'=>$_POST['group_assign']);
+      $input['_disablenotif'] = true;
       $ticket->update($input);
       
      
@@ -88,6 +80,19 @@ if (isset($_POST['update']) AND $_POST['group_assign'] > 0) {
          }
       }
       $_SESSION['glpiactiveprofile']['assign_ticket'] = $assign_ticket_right;
+      
+   // delete group
+      $group_ticket = new Group_Ticket();
+
+      $a_groups = $group_ticket->find("`tickets_id`='".$_POST['tickets_id']."'
+         AND `type`='2'");
+      foreach ($a_groups as $data) {   
+         if ($data['groups_id'] != $_POST['group_assign']) {
+            $group_ticket->delete($data);
+            Event::log($_POST['tickets_id'], "ticket", 4, "tracking",
+                       $_SESSION["glpiname"]." ".$LANG['log'][122]);
+         }
+      }
    Html::back();
 } else if (isset($_POST['update']) AND $_POST['_users_id_assign'] > 0) {
    $assign_ticket_right = $_SESSION['glpiactiveprofile']['assign_ticket'];

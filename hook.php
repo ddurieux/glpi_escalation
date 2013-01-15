@@ -23,7 +23,7 @@
    GNU Affero General Public License for more details.
 
    You should have received a copy of the GNU Affero General Public License
-   along with Behaviors. If not, see <http://www.gnu.org/licenses/>.
+   along with Escalation. If not, see <http://www.gnu.org/licenses/>.
 
    ------------------------------------------------------------------------
 
@@ -62,18 +62,28 @@ function plugin_escalation_install() {
             `entities_id` int(11) NOT NULL DEFAULT '0',
             `unique_assigned` varchar(255) DEFAULT NULL,
             `workflow`  varchar(255) DEFAULT NULL,
+            `limitgroup`  varchar(255) DEFAULT NULL,
             PRIMARY KEY (`id`)
          ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;");
          $DB->query("INSERT INTO `glpi_plugin_escalation_configs`
-            (`id` ,`entities_id` ,`unique_assigned` ,`workflow`)
-         VALUES (NULL , '0', '0', '0');");         
+            (`id` ,`entities_id` ,`unique_assigned` ,`workflow`, `limitgroup`)
+         VALUES (NULL , '0', '0', '0', '0');");         
       }
       if (!TableExists("glpi_plugin_escalation_profiles")) {
          $DB->query("CREATE TABLE `glpi_plugin_escalation_profiles` (
            `profiles_id` int(11) NOT NULL DEFAULT '0',
            `bypassworkflow` char(1) COLLATE utf8_unicode_ci DEFAULT NULL
          ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;");
-      }      
+      }   
+      if (!FieldExists("glpi_plugin_escalation_configs", "limitgroup")) {
+         $migration = new Migration(PLUGIN_ESCALATION_VERSION);
+         $migration->addField('glpi_plugin_escalation_configs',
+                              "limitgroup",
+                              "varchar(255) DEFAULT NULL");
+         $migration->migrationOneTable('glpi_plugin_escalation_configs');
+         $DB->query("UPDATE `glpi_plugin_escalation_configs` 
+            SET `limitgroup` = '0' WHERE `entities_id` =1");
+      }
    }
    return true;
 }

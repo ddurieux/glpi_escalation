@@ -23,7 +23,7 @@
    GNU Affero General Public License for more details.
 
    You should have received a copy of the GNU Affero General Public License
-   along with Behaviors. If not, see <http://www.gnu.org/licenses/>.
+   along with Escalation. If not, see <http://www.gnu.org/licenses/>.
 
    ------------------------------------------------------------------------
 
@@ -127,6 +127,7 @@ class PluginEscalationConfig extends CommonDBTM {
       $value = str_replace("++", "+", $value);
       Dropdown::showFromArray("unique_assigned", $elements, array('value' => $value));
       echo "</td>";
+      
       echo "<td>Workflow&nbsp;:</td>";
       echo "<td>";
       if ($entities_id == '0') {
@@ -145,6 +146,28 @@ class PluginEscalationConfig extends CommonDBTM {
       $value = (is_null($this->fields['workflow']) ? "NULL" : "+".$this->fields['workflow']);
 
       Dropdown::showFromArray("workflow", $elements, array('value' => $value));
+      echo "</td>";
+      echo "</tr>";
+      
+      echo "<tr>";
+      echo "<td>Limiter groupes demandeurs des groupes du rédacteur&nbsp;:</td>";
+      echo "<td>";
+      if ($entities_id == '0') {
+         $elements = array("+0" => $LANG['choice'][0],
+                           "+1" => $LANG['choice'][1]
+                           );
+      } else {
+         $elements = array("NULL" => $LANG['common'][102],
+                           "+0" => $LANG['choice'][0],
+                           "+1" => $LANG['choice'][1]
+                           );
+      }
+      $value = (is_null($this->fields['limitgroup']) ? "NULL" : "+".$this->fields['limitgroup']);
+      $value = str_replace("++", "+", $value);
+      
+      Dropdown::showFromArray("limitgroup", $elements, array('value' => $value));
+      echo "</td>";
+      echo "<td colspan='2'>";
       echo "</td>";
       echo "</tr>";
       

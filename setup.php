@@ -23,7 +23,7 @@
    GNU Affero General Public License for more details.
 
    You should have received a copy of the GNU Affero General Public License
-   along with Behaviors. If not, see <http://www.gnu.org/licenses/>.
+   along with Escalation. If not, see <http://www.gnu.org/licenses/>.
 
    ------------------------------------------------------------------------
 
@@ -40,7 +40,7 @@
    ------------------------------------------------------------------------
  */
 
-define ("PLUGIN_ESCALATION_VERSION","0.83+1.1");
+define ("PLUGIN_ESCALATION_VERSION","0.83+1.2");
 
 // Init the hooks of escalation
 function plugin_init_escalation() {
@@ -72,6 +72,28 @@ function plugin_init_escalation() {
             
             $PLUGIN_HOOKS['menu_entry']['escalation'] = false;
             
+            PluginEscalationGroup_Group::convertNewTicket();
+
+            // limit group
+            $peConfig = new PluginEscalationConfig();
+            if ($peConfig->getValue('limitgroup', $_SESSION['glpidefault_entity']) == '1') {
+               if (strpos($_SERVER['PHP_SELF'],"ticket.form.php")
+                       && !isset($_GET['id'])) {
+                  
+                  $group = new Group();
+                  $a_groups = array();
+                  $a_groups[0] = Dropdown::EMPTY_VALUE;
+                  foreach($_SESSION['glpigroups'] as $groups_id) {
+                     $group->getFromDB($groups_id);
+                     $a_groups[$groups_id] = $group->getName();
+                  }
+                  $_SESSION['plugin_escalation_requestergroups'] = $a_groups;
+
+                  register_shutdown_function('plugin_escalation_on_exit');
+                  ob_start();
+               }
+            }
+            // end limit group
          }
          
          $PLUGIN_HOOKS['headings']['escalation'] = 'plugin_get_headings_escalation';
@@ -79,10 +101,8 @@ function plugin_init_escalation() {
 
          $PLUGIN_HOOKS['pre_item_add']['escalation'] = array('Ticket' => array('PluginEscalationGroup_Group', 'selectGroupOnAdd'));
          
-         $PLUGIN_HOOKS['pre_item_update']['escalation'] = array('Ticket' => array('PluginEscalationGroup_Group', 'notMultiple'));
+//         $PLUGIN_HOOKS['pre_item_update']['escalation'] = array('Ticket' => array('PluginEscalationGroup_Group', 'notMultiple'));
          
-//         $PLUGIN_HOOKS['pre_item_update']['escalation'] = array('Ticket' => array('PluginEscalationGroup_Group', 'allowAssignRight'));
-//         $PLUGIN_HOOKS['item_update']['escalation'] = array('Ticket' => array('PluginEscalationGroup_Group', 'restoreAssignRight'));
          
       }
 
@@ -117,6 +137,35 @@ function plugin_escalation_check_config() {
 
 function plugin_escalation_haveTypeRight($type,$right) {
    return true;
+}
+
+
+
+function plugin_escalation_on_exit() {
+   global $LANG;
+
+   $out = ob_get_contents();
+   ob_end_clean();
+   
+   $split = explode('pics/groupes.png', $out);
+   if (!isset($split[1])) {
+      echo $out;
+      return;
+   }
+   $first_out = $split[0];
+   unset($split[0]);
+   $split2 = explode('</td>', implode('pics/groupes.png', $split));
+
+   unset($split2[0]);
+   echo $first_out."pics/groupes.png' alt='".$LANG['Menu'][36]."' title='".$LANG['Menu'][36]."' width='20'>";
+   if (strstr($out, "<span class='red'>*</span>")) {
+      echo '<span class="red">*</span> ';
+   }
+
+   Dropdown::showFromArray("dropdown__groups_id_requester", $_SESSION['plugin_escalation_requestergroups']);
+   
+   echo implode('</td>', $split2);
+   
 }
 
 ?>

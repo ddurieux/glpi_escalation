@@ -23,7 +23,7 @@
    GNU Affero General Public License for more details.
 
    You should have received a copy of the GNU Affero General Public License
-   along with Behaviors. If not, see <http://www.gnu.org/licenses/>.
+   along with Escalation. If not, see <http://www.gnu.org/licenses/>.
 
    ------------------------------------------------------------------------
 
@@ -249,17 +249,35 @@ class PluginEscalationGroup_Group extends CommonDBRelation {
    
    
    static function selectGroupOnAdd($item) {
-      global $CFG_GLPI,$LANG;
+      global $CFG_GLPI,$LANG,$DB;
+      
+      $peGroup_group = new self();
 
       if ($_SESSION['glpiactiveprofile']['interface'] == 'central') {
          $peConfig = new PluginEscalationConfig();
          if ($peConfig->getValue('workflow', $item->fields['entities_id']) == '1') {
-            if (isset($_POST['_groups_id_assign'])) {
+            if (isset($_POST['_groups_id_assign'])
+		&& $_POST['_groups_id_assign'] > 0) {
+               
+               if (isset($_SESSION['plugin_escalation_files'])) {
+                  $_FILES = $_SESSION['plugin_escalation_files'];
+               }
+               
                return;
             } else {
                $group= new Group();
                Html::header($LANG['Menu'][5],'',"maintain","ticket");
+               
+               if (isset($_FILES)) {
+                  foreach ($_FILES['filename']['tmp_name'] as $numfile=>$datafile) {
+                     $split = explode("/", $datafile);
 
+                     Document::renameForce($datafile, 
+                             GLPI_DOC_DIR."/_tmp/".end($split));
+                     $_FILES['filename']['tmp_name'][$numfile] = GLPI_DOC_DIR."/_tmp/".end($split);
+                  }
+                  $_SESSION['plugin_escalation_files'] = $_FILES;
+               }
                echo '<form action="'.$CFG_GLPI['root_doc'].'/front/ticket.form.php" 
                   enctype="multipart/form-data" name="form_ticket" method="post">';
                echo "<table class='tab_cadre_fixe'>";
@@ -275,10 +293,19 @@ class PluginEscalationGroup_Group extends CommonDBRelation {
                echo "<td>";
                $a_groups = array();
                foreach($_SESSION['glpigroups'] as $groups_id) {
-                  $group->getFromDB($groups_id);
+                  $group->getFromDB($groups_id);                  
                   $a_groups[$groups_id] = $group->getName();
+                  
+                  $queryg = "SELECT * FROM `".$peGroup_group->getTable()."`
+                     WHERE `groups_id_source` = '".$groups_id."' ";
+                  $resultg = $DB->query($queryg);
+                  while ($datag=$DB->fetch_array($resultg)) {
+                     $group->getFromDB($datag['groups_id_destination']);
+                     $a_groups[$groups_id."_".$datag['groups_id_destination']] = "&nbsp;&nbsp;&nbsp;> ".$group->getName();
+                  }  
                }
-               $rand = Dropdown::showFromArray("_groups_id_assign", $a_groups);
+               
+               $rand = Dropdown::showFromArray("_groups_id_assign_escalation", $a_groups);
 
                $params = array('groups_id'   => '__VALUE__',
                                'entity'      => $_POST['entities_id'],
@@ -291,7 +318,19 @@ class PluginEscalationGroup_Group extends CommonDBRelation {
                echo "<tr class='tab_bg_1'>";
                echo "<td colspan='2'>";
                foreach ($_POST as $key=>$value) {
-                  echo "<input type='hidden' name='".$key."' value='".$value."' />"; 
+                  if (is_array($value)) {
+                     foreach ($value as $keyy=>$valuee) {
+                        echo '<input type="hidden" name="'.$key.'['.$keyy.']" value="'.$valuee.'" />'; 
+                     }
+                  } else if ($key == 'content') {
+                     $value = Html::cleanPostForTextArea(Toolbox::clean_cross_side_scripting_deep($value));
+                     echo '<textarea name="'.$key.'" style="display:none;">'.$value.'</textarea>';
+                  } else if ($key == 'dropdown__groups_id_requester') {
+                     echo '<input type="hidden" name="_groups_id_requester" value="'.$value.'" />'; 
+                  } else {
+                     $value = Html::cleanInputText(Toolbox::clean_cross_side_scripting_deep(stripslashes($value)));
+                     echo '<input type="hidden" name="'.$key.'" value="'.$value.'" />'; 
+                  }
                }
                if (!isset($_POST['_users_id_assign'])
                        OR $_POST['_users_id_assign'] == '0') {
@@ -401,12 +440,25 @@ class PluginEscalationGroup_Group extends CommonDBRelation {
                   foreach ($a_users as $data) {
                      if (countElementsInTable($group_User->getTable(), 
                              "`users_id`='".$data['users_id']."' 
-                             AND `groups_id`='".$item->input['_ticket_assign']['groups_id']."'") == '0') {
+                             AND `groups_id`='".$item->input['_itil_assign']['groups_id']."'") == '0') {
                         $ticket_User->delete($data);
                      }
                   }               
                }          
             }
+         }
+      }
+   }
+   
+   
+   
+   static function convertNewTicket() {
+      if (isset($_POST['_groups_id_assign_escalation'])) {
+         $split = explode('_', $_POST['_groups_id_assign_escalation']);
+         if (isset($split[1])) {
+            $_POST['_groups_id_assign'] = $split[1];
+         } else {
+            $_POST['_groups_id_assign'] = $split[0];
          }
       }
    }
