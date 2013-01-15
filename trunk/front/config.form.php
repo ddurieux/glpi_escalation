@@ -23,7 +23,7 @@
    GNU Affero General Public License for more details.
 
    You should have received a copy of the GNU Affero General Public License
-   along with Behaviors. If not, see <http://www.gnu.org/licenses/>.
+   along with Escalation. If not, see <http://www.gnu.org/licenses/>.
 
    ------------------------------------------------------------------------
 
@@ -61,6 +61,10 @@ if (isset($_POST['workflow'])
         AND $_POST['workflow'] == '+1') {
    $_POST['workflow'] = 1;
 }
+if (isset($_POST['limitgroup'])
+        AND $_POST['limitgroup'] == '+1') {
+   $_POST['limitgroup'] = 1;
+}
 if (isset($_POST['unique_assigned'])
         AND $_POST['unique_assigned'] == '+0') {
    $_POST['unique_assigned'] = 0;
@@ -68,6 +72,10 @@ if (isset($_POST['unique_assigned'])
 if (isset($_POST['workflow'])
         AND $_POST['workflow'] == '+0') {
    $_POST['workflow'] = 0;
+}
+if (isset($_POST['limitgroup'])
+        AND $_POST['limitgroup'] == '+0') {
+   $_POST['limitgroup'] = 0;
 }
 
 if (isset ($_POST["add"])) {
