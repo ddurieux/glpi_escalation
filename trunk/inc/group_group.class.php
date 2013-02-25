@@ -250,6 +250,10 @@ class PluginEscalationGroup_Group extends CommonDBRelation {
    
    static function selectGroupOnAdd($item) {
       global $CFG_GLPI,$LANG,$DB;
+
+      if (isset($item->input['_auto_import'])) {
+         return;
+      }
       
       $peGroup_group = new self();
 
