@@ -40,7 +40,7 @@
    ------------------------------------------------------------------------
  */
 
-define ("PLUGIN_ESCALATION_VERSION","0.83+1.2");
+define ("PLUGIN_ESCALATION_VERSION","0.83+1.3");
 
 // Init the hooks of escalation
 function plugin_init_escalation() {
@@ -69,6 +69,8 @@ function plugin_init_escalation() {
             
             Plugin::registerClass('PluginEscalationProfile',
                                           array('addtabon'=> array('Profile')));
+            Plugin::registerClass('PluginEscalationTicketCopy',
+                                          array('addtabon'=> array('Ticket')));
             
             $PLUGIN_HOOKS['menu_entry']['escalation'] = false;
             
@@ -100,6 +102,8 @@ function plugin_init_escalation() {
          $PLUGIN_HOOKS['headings_action']['escalation'] = 'plugin_headings_actions_escalation';
 
          $PLUGIN_HOOKS['pre_item_add']['escalation'] = array('Ticket' => array('PluginEscalationGroup_Group', 'selectGroupOnAdd'));
+         $PLUGIN_HOOKS['item_add']['escalation'] = array('Ticket' => 
+             array('PluginEscalationTicketCopy', 'finishAdd'));
          
 //         $PLUGIN_HOOKS['pre_item_update']['escalation'] = array('Ticket' => array('PluginEscalationGroup_Group', 'notMultiple'));
          
@@ -162,7 +166,29 @@ function plugin_escalation_on_exit() {
       echo '<span class="red">*</span> ';
    }
 
-   Dropdown::showFromArray("dropdown__groups_id_requester", $_SESSION['plugin_escalation_requestergroups']);
+   // Extract default value if exist
+   $d_split = explode('dropdown__groups_id_requester', $out);
+   $d_split2 = explode('</select>', $d_split[1]);
+//   echo $d_split2[0];
+   preg_match("/selected value='([0-9]+)'/", $d_split2[0], $a_selected);
+
+/*
+<option class="tree" selected="" value="3">
+<option class="tree" selected="" value="3">groupe 1 &gt; groupe 3</option>
+ 
+ */
+   
+   $options = array();
+   if (isset($a_selected[1])
+           && is_numeric($a_selected[1])
+           && isset($_SESSION['plugin_escalation_requestergroups'][$a_selected[1]])) {
+      
+      $options['value'] = $a_selected[1];
+   }
+   
+   Dropdown::showFromArray("dropdown__groups_id_requester", 
+                           $_SESSION['plugin_escalation_requestergroups'],
+                           $options);
    
    echo implode('</td>', $split2);
    

@@ -72,9 +72,17 @@ function plugin_escalation_install() {
       if (!TableExists("glpi_plugin_escalation_profiles")) {
          $DB->query("CREATE TABLE `glpi_plugin_escalation_profiles` (
            `profiles_id` int(11) NOT NULL DEFAULT '0',
-           `bypassworkflow` char(1) COLLATE utf8_unicode_ci DEFAULT NULL
+           `bypassworkflow` char(1) COLLATE utf8_unicode_ci DEFAULT NULL,
+           `copyticket` char(1) COLLATE utf8_unicode_ci DEFAULT NULL,
+           `copyticketonworkflow` char(1) COLLATE utf8_unicode_ci DEFAULT NULL
          ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;");
       }   
+      if (!FieldExists('glpi_plugin_escalation_profiles', 'copyticket')) {
+         $DB->query("ALTER TABLE `glpi_plugin_escalation_profiles` 
+            ADD `copyticket` CHAR( 1 ) NULL ");
+         $DB->query("ALTER TABLE `glpi_plugin_escalation_profiles` 
+            ADD `copyticketonworkflow` CHAR( 1 ) NULL ");
+      }
       if (!FieldExists("glpi_plugin_escalation_configs", "limitgroup")) {
          $migration = new Migration(PLUGIN_ESCALATION_VERSION);
          $migration->addField('glpi_plugin_escalation_configs',

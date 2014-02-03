@@ -48,16 +48,24 @@ include (GLPI_ROOT . "/inc/includes.php");
 Html::header("escalation",$_SERVER["PHP_SELF"], "plugins", 
              "escalation", "group_group");
 
-if (isset($_POST['update']) AND $_POST['group_assign'] > 0) {
+// manage create under ticket
+if (isset($_POST['update']) && $_POST['createsubticket'] == 1) {
+   PluginEscalationTicketCopy::createSubTicket($_POST['tickets_id']);
+}
+
+if (isset($_POST['update']) && $_POST['group_assign'] > 0) {
    $assign_ticket_right = $_SESSION['glpiactiveprofile']['assign_ticket'];
    $_SESSION['glpiactiveprofile']['assign_ticket'] = 1;
-
       
    // Add group
       $ticket = new Ticket();
       $input = array();
       $input['id'] = $_POST['tickets_id'];
       $input['_itil_assign'] = array('_type'=>'group','groups_id'=>$_POST['group_assign']);
+      $ticket->getFromDB($_POST['tickets_id']);
+      if ($ticket->fields['status'] == 'waiting') {
+         $input['status'] = 'assign';
+      }
       $input['_disablenotif'] = true;
       $ticket->update($input);
       

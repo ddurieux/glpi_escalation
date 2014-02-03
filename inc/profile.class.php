@@ -181,8 +181,21 @@ class PluginEscalationProfile extends CommonDBTM {
       Dropdown::showYesNo("bypassworkflow", $this->fields["bypassworkflow"]);
       echo "</td>";
       echo "<td>";
+      echo "Copier ticket";
       echo "</td>";
       echo "<td>";
+      Dropdown::showYesNo("copyticket", $this->fields["copyticket"]);
+      echo "</td>";
+      echo "</tr>";
+      
+      echo "<tr class='tab_bg_1'>";
+      echo "<td colspan='2'>";
+      echo "</td>";
+      echo "<td>";
+      echo "Créer sous-ticket lors d'une escalade (workflow)";
+      echo "</td>";
+      echo "<td>";
+      Dropdown::showYesNo("copyticketonworkflow", $this->fields["copyticketonworkflow"]);
       echo "</td>";
       echo "</tr>";
       
