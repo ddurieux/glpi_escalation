@@ -87,7 +87,7 @@ class PluginEscalationTicketCopy extends CommonDBRelation {
     
    
    function showForm(Ticket $ticket) {
-      global $CFG_GLPI, $LANG;
+      global $CFG_GLPI;
 
       echo "<form method='post' name='' id=''  action=\"".$CFG_GLPI['root_doc'] . 
          "/plugins/escalation/front/ticketcopy.form.php\">";
@@ -118,9 +118,9 @@ class PluginEscalationTicketCopy extends CommonDBRelation {
       echo "</td>";
       echo "</tr>";
   
-      $this->displayField($LANG['common'][57], "name", $ticket->fields['name'], '', 'checked');
+      $this->displayField(__('Title'), "name", $ticket->fields['name'], '', 'checked');
       
-      $this->displayField($LANG['joblist'][6], "content", $ticket->fields['content'], '', 
+      $this->displayField(__('Description'), "content", $ticket->fields['content'], '', 
                           'checked');      
     
       echo "</table>";
@@ -130,44 +130,44 @@ class PluginEscalationTicketCopy extends CommonDBRelation {
       echo "<div id='listfields' style='display:none;'>";
       echo "<table width='950' class='tab_cadre_fixe'>";
       
-      $this->displayField($LANG['joblist'][0], "status", 
+      $this->displayField(__('Status'), "status", 
          Ticket::getStatus($ticket->fields['status']), $ticket->fields['status']);
       
-      $this->displayField($LANG['common'][17], "type", 
+      $this->displayField(__('Type'), "type", 
          Ticket::getTicketTypeName($ticket->fields['type']), $ticket->fields['type']);
       
-      $this->displayField($LANG['joblist'][29], "urgency", 
+      $this->displayField(__('Urgency'), "urgency", 
          Ticket::getUrgencyName($ticket->fields['urgency']), $ticket->fields['urgency']); 
       
-      $this->displayField($LANG['joblist'][30], "impact", 
+      $this->displayField(__('Impact'), "impact", 
          Ticket::getImpactName($ticket->fields['impact']), $ticket->fields['impact']);
       
-      $this->displayField($LANG['joblist'][2], "priority", 
+      $this->displayField(__('Priority'), "priority", 
          Ticket::getPriorityName($ticket->fields['priority']), $ticket->fields['priority']);
       
-      $this->displayField($LANG['sla'][5], "due_date", 
+      $this->displayField(__('Due date'), "due_date", 
          Html::convDateTime($ticket->fields['due_date']), $ticket->fields['due_date']);
       
-      $this->displayField($LANG['common'][36], "itilcategories_id", 
+      $this->displayField(__('Category'), "itilcategories_id", 
          Dropdown::getDropdownName('glpi_itilcategories', $ticket->fields['itilcategories_id']), 
          $ticket->fields['itilcategories_id']);
       
       if ($ticket->fields['items_id'] > 0) {
-         $this->displayField($LANG['document'][14].' - '.$LANG['common'][17], "itemtype", 
+         $this->displayField(__('Associated element').' - '.__('Type'), "itemtype", 
             call_user_func(array($ticket->fields['itemtype'], 'getTypeName')), 
             $ticket->fields['itemtype']);
          
-         $this->displayField($LANG['document'][14], "items_id", 
+         $this->displayField(__('Associated element'), "items_id", 
          Dropdown::getDropdownName(getTableForItemType($ticket->fields['itemtype']), 
                                    $ticket->fields['items_id']), 
          $ticket->fields['items_id']);
       }
       
-      $this->displayField($LANG['job'][44], "requesttypes_id", 
+      $this->displayField(__('Request source'), "requesttypes_id", 
          Dropdown::getDropdownName('glpi_requesttypes', $ticket->fields['requesttypes_id']),
          $ticket->fields['requesttypes_id']);
             
-      $this->displayField($LANG['sla'][1], "slas_id", 
+      $this->displayField(__('SLA'), "slas_id", 
          Dropdown::getDropdownName('glpi_slas', $ticket->fields['slas_id']),
          $ticket->fields['slas_id']);
       
@@ -182,7 +182,7 @@ class PluginEscalationTicketCopy extends CommonDBRelation {
          } else {
             $name = Dropdown::getDropdownName('glpi_users', $data['users_id']);
          }
-         $this->displayField($LANG['job'][4], "_users_id_requester", 
+         $this->displayField(__('Requester'), "_users_id_requester", 
             $name, $data['id']);
       }
       
@@ -191,7 +191,7 @@ class PluginEscalationTicketCopy extends CommonDBRelation {
       $a_group_tickets = $group_Ticket->find("`tickets_id`='".$ticket->getID()."'
          AND `type`='1'");
       foreach ($a_group_tickets as $data) {
-         $this->displayField($LANG['setup'][249], "_groups_id_requester", 
+         $this->displayField(__('Requester group'), "_groups_id_requester", 
             Dropdown::getDropdownName('glpi_groups', $data['groups_id']), $data['groups_id']);
       }
 
@@ -207,14 +207,14 @@ class PluginEscalationTicketCopy extends CommonDBRelation {
             } else {
                $name = Dropdown::getDropdownName('glpi_users', $data['users_id']);
             }
-            $this->displayField($LANG['job'][6], "_users_id_assign", 
+            $this->displayField(__('Technician'), "_users_id_assign", 
                $name, $data['id']);
          }
 
          $a_group_tickets = $group_Ticket->find("`tickets_id`='".$ticket->getID()."'
             AND `type`='2'");
          foreach ($a_group_tickets as $data) {
-            $this->displayField($LANG['setup'][248], "_groups_id_assign", 
+            $this->displayField(__('Group in charge of the ticket'), "_groups_id_assign", 
                Dropdown::getDropdownName('glpi_groups', $data['groups_id']), $data['groups_id']);
          }
       }
@@ -222,14 +222,14 @@ class PluginEscalationTicketCopy extends CommonDBRelation {
       $ticketFollowup= new TicketFollowup();
       $followups = $ticketFollowup->find("`tickets_id`='".$ticket->getID()."'");
       foreach ($followups as $data) {
-         $this->displayField($LANG['job'][9], "followup-".$data['id'], 
+         $this->displayField(__('Follow-up'), "followup-".$data['id'], 
             $data['content'], $data['id']);
       }
       
       $ticketTask= new TicketTask();
       $tasks = $ticketTask->find("`tickets_id`='".$ticket->getID()."'");
       foreach ($tasks as $data) {
-         $this->displayField($LANG['job'][7], "task-".$data['id'], 
+         $this->displayField(__('Task'), "task-".$data['id'], 
             $data['content'], $data['id']);
       }
       

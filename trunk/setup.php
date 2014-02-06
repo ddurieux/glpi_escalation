@@ -40,11 +40,11 @@
    ------------------------------------------------------------------------
  */
 
-define ("PLUGIN_ESCALATION_VERSION","0.83+1.3");
+define ("PLUGIN_ESCALATION_VERSION","0.84+1.0");
 
 // Init the hooks of escalation
 function plugin_init_escalation() {
-   global $PLUGIN_HOOKS,$CFG_GLPI,$LANG;
+   global $PLUGIN_HOOKS,$CFG_GLPI;
    
    $PLUGIN_HOOKS['change_profile']['escalation'] = array('PluginEscalationProfile','changeprofile');
    
@@ -71,6 +71,12 @@ function plugin_init_escalation() {
                                           array('addtabon'=> array('Profile')));
             Plugin::registerClass('PluginEscalationTicketCopy',
                                           array('addtabon'=> array('Ticket')));
+            Plugin::registerClass('PluginEscalationConfig',
+                                          array('addtabon'=> array('Entity')));
+            Plugin::registerClass('PluginEscalationGroup_Group',
+                                          array('addtabon'=> array(
+                                              'Ticket', 
+                                              'Group')));
             
             $PLUGIN_HOOKS['menu_entry']['escalation'] = false;
             
@@ -98,12 +104,14 @@ function plugin_init_escalation() {
             // end limit group
          }
          
-         $PLUGIN_HOOKS['headings']['escalation'] = 'plugin_get_headings_escalation';
-         $PLUGIN_HOOKS['headings_action']['escalation'] = 'plugin_headings_actions_escalation';
-
-         $PLUGIN_HOOKS['pre_item_add']['escalation'] = array('Ticket' => array('PluginEscalationGroup_Group', 'selectGroupOnAdd'));
-         $PLUGIN_HOOKS['item_add']['escalation'] = array('Ticket' => 
-             array('PluginEscalationTicketCopy', 'finishAdd'));
+         $PLUGIN_HOOKS['pre_item_add']['escalation'] = array(
+             'Ticket' => array(
+                 'PluginEscalationGroup_Group', 
+                 'selectGroupOnAdd'));
+         $PLUGIN_HOOKS['item_add']['escalation'] = array(
+             'Ticket' => array(
+                 'PluginEscalationTicketCopy', 
+                 'finishAdd'));
          
 //         $PLUGIN_HOOKS['pre_item_update']['escalation'] = array('Ticket' => array('PluginEscalationGroup_Group', 'notMultiple'));
          
@@ -119,16 +127,15 @@ function plugin_version_escalation() {
                 'version'        => PLUGIN_ESCALATION_VERSION,
                 'author'         =>'<a href="mailto:d.durieux@siprossii.com">David DURIEUX</a>',
                 'homepage'       =>'',
-                'minGlpiVersion' => '0.83'
+                'minGlpiVersion' => '0.84'
    );
 }
 
 
 // Optional : check prerequisites before install : may print errors or add to message after redirect
 function plugin_escalation_check_prerequisites() {
-   global $LANG;
    
-   if (GLPI_VERSION >= '0.83') {
+   if (GLPI_VERSION >= '0.84') {
       return true;
    } else {
       echo "error";
@@ -146,8 +153,7 @@ function plugin_escalation_haveTypeRight($type,$right) {
 
 
 function plugin_escalation_on_exit() {
-   global $LANG;
-
+   
    $out = ob_get_contents();
    ob_end_clean();
    
@@ -161,7 +167,7 @@ function plugin_escalation_on_exit() {
    $split2 = explode('</td>', implode('pics/groupes.png', $split));
 
    unset($split2[0]);
-   echo $first_out."pics/groupes.png' alt='".$LANG['Menu'][36]."' title='".$LANG['Menu'][36]."' width='20'>";
+   echo $first_out."pics/groupes.png' alt='".__('Groups')."' title='".__('Groups')."' width='20'>";
    if (strstr($out, "<span class='red'>*</span>")) {
       echo '<span class="red">*</span> ';
    }
@@ -184,6 +190,9 @@ function plugin_escalation_on_exit() {
            && isset($_SESSION['plugin_escalation_requestergroups'][$a_selected[1]])) {
       
       $options['value'] = $a_selected[1];
+   } else if (count($_SESSION['plugin_escalation_requestergroups']) == 2) {
+      $a_list_tmp = array_slice($_SESSION['plugin_escalation_requestergroups'], 1, 1, TRUE);
+      $options['value'] = key($a_list_tmp);
    }
    
    Dropdown::showFromArray("dropdown__groups_id_requester", 

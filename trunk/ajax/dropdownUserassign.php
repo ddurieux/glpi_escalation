@@ -50,7 +50,7 @@ $user = new User();
 echo '<table>';
 echo "<tr>";
 echo "<td>";
-echo $LANG['job'][6]."&nbsp: ";
+echo __('Technician')."&nbsp: ";
 echo "</td>";
 echo "<td>";
 $elements = array('0' => Dropdown::EMPTY_VALUE);
