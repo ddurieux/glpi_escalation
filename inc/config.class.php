@@ -52,36 +52,61 @@ class PluginEscalationConfig extends CommonDBTM {
    *@return text name of this type by language of the user connected
    *
    **/
-   static function getTypeName() {
-      global $LANG;
-
-      return "configuration";
+   static function getTypeName($nb=0) {
+      return __('Configuration');
    }
    
    
 
-   function canCreate() {
+   static function canCreate() {
       return true;
    }
 
 
    
-   function canView() {
+   static function canView() {
       return true;
    }
-
 
    
-   function canCancel() {
-      return true;
+ 
+   /**
+    * Display tab
+    *
+    * @param CommonGLPI $item
+    * @param integer $withtemplate
+    *
+    * @return varchar name of the tab(s) to display
+    */
+   function getTabNameForItem(CommonGLPI $item, $withtemplate=0) {
+
+      if ($item->getType() == 'Entity'
+              && $item->getID() > -1
+              && Session::haveRight("entity", 'r')) {
+         return "Escalade";
+      }
+      return '';
    }
 
 
-   
-   function canUndo() {
-      return true;
-   }
 
+   /**
+    * Display content of tab
+    *
+    * @param CommonGLPI $item
+    * @param integer $tabnum
+    * @param interger $withtemplate
+    *
+    * @return boolean TRUE
+    */
+   static function displayTabContentForItem(CommonGLPI $item, $tabnum=1, $withtemplate=0) {
+
+      if ($item->getType()=='Entity') {
+         $peConfig = new PluginEscalationConfig();
+         $peConfig->showForm($item->getID());
+      }
+      return TRUE;
+   }
    
 
    
@@ -95,7 +120,7 @@ class PluginEscalationConfig extends CommonDBTM {
    *
    **/
    function showForm($entities_id, $options=array(), $copy=array()) {
-      global $DB,$CFG_GLPI,$LANG;
+      global $DB,$CFG_GLPI;
 
       $a_configs = $this->find("`entities_id`='".$entities_id."'", "", 1);
       if (count($a_configs) == '1') {
@@ -114,13 +139,13 @@ class PluginEscalationConfig extends CommonDBTM {
       echo "</td>";
       echo "<td>";
       if ($entities_id == '0') {
-         $elements = array("+0" => $LANG['choice'][0],
-                           "+1" => $LANG['choice'][1]
+         $elements = array("+0" => __('No'),
+                           "+1" => __('Yes')
                            );
       } else {
-         $elements = array("NULL" => $LANG['common'][102],
-                           "+0" => $LANG['choice'][0],
-                           "+1" => $LANG['choice'][1]
+         $elements = array("NULL" => __('Inheritance of the parent entity'),
+                           "+0" => __('No'),
+                           "+1" => __('Yes')
                            );
       }
       $value = (is_null($this->fields['unique_assigned']) ? "NULL" : "+".$this->fields['unique_assigned']);
@@ -131,13 +156,13 @@ class PluginEscalationConfig extends CommonDBTM {
       echo "<td>Workflow&nbsp;:</td>";
       echo "<td>";
       if ($entities_id == '0') {
-         $elements = array("+0" => $LANG['choice'][0],
-                           "+1" => $LANG['choice'][1]
+         $elements = array("+0" => __('No'),
+                           "+1" => __('Yes')
                            );
       } else {
-         $elements = array("NULL" => $LANG['common'][102],
-                           "+0" => $LANG['choice'][0],
-                           "+1" => $LANG['choice'][1]
+         $elements = array("NULL" => __('Inheritance of the parent entity'),
+                           "+0" => __('No'),
+                           "+1" => __('Yes')
                            );
       }
       $value = (is_null($this->fields['workflow']) ? "NULL" : "+".$this->fields['workflow']);
@@ -153,13 +178,13 @@ class PluginEscalationConfig extends CommonDBTM {
       echo "<td>Limiter groupes demandeurs des groupes du rédacteur&nbsp;:</td>";
       echo "<td>";
       if ($entities_id == '0') {
-         $elements = array("+0" => $LANG['choice'][0],
-                           "+1" => $LANG['choice'][1]
+         $elements = array("+0" => __('No'),
+                           "+1" => __('Yes')
                            );
       } else {
-         $elements = array("NULL" => $LANG['common'][102],
-                           "+0" => $LANG['choice'][0],
-                           "+1" => $LANG['choice'][1]
+         $elements = array("NULL" => __('Inheritance of the parent entity'),
+                           "+0" => __('No'),
+                           "+1" => __('Yes')
                            );
       }
       $value = (is_null($this->fields['limitgroup']) ? "NULL" : "+".$this->fields['limitgroup']);

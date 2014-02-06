@@ -84,7 +84,7 @@ if (isset($_POST['update']) && $_POST['group_assign'] > 0) {
          if ($DB->numrows($result) == '0') {
             $ticket_user->delete($data);
             Event::log($_POST['tickets_id'], "ticket", 4,
-              "tracking", $_SESSION["glpiname"]." ".$LANG['log'][122]);
+              "tracking", $_SESSION["glpiname"]." ".__('Deletion of an actor to the ticket'));
          }
       }
       $_SESSION['glpiactiveprofile']['assign_ticket'] = $assign_ticket_right;
@@ -98,7 +98,7 @@ if (isset($_POST['update']) && $_POST['group_assign'] > 0) {
          if ($data['groups_id'] != $_POST['group_assign']) {
             $group_ticket->delete($data);
             Event::log($_POST['tickets_id'], "ticket", 4, "tracking",
-                       $_SESSION["glpiname"]." ".$LANG['log'][122]);
+                       $_SESSION["glpiname"]." ".__('Deletion of an actor to the ticket'));
          }
       }
    Html::back();
@@ -119,7 +119,7 @@ if (isset($_POST['update']) && $_POST['group_assign'] > 0) {
          if ($data['users_id'] != $_POST['_users_id_assign']) {
             $ticket_user->delete($data);
             Event::log($_POST['tickets_id'], "ticket", 4,
-              "tracking", $_SESSION["glpiname"]." ".$LANG['log'][122]);
+              "tracking", $_SESSION["glpiname"]." ".__('Deletion of an actor to the ticket'));
          }
       }
    $_SESSION['glpiactiveprofile']['assign_ticket'] = $assign_ticket_right;

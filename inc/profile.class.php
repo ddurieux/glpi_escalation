@@ -47,11 +47,15 @@ if (!defined('GLPI_ROOT')) {
 
 class PluginEscalationProfile extends CommonDBTM {
 
-   function canView() {
+  
+   
+   static function canView() {
       return Session::haveRight('profile','r');
    }
 
-   function canCreate() {
+   
+   
+   static function canCreate() {
       return Session::haveRight('profile','w');
    }
 
@@ -62,7 +66,7 @@ class PluginEscalationProfile extends CommonDBTM {
     *
     * @return name of the index field
    **/
-   function getIndexName() {
+   static function getIndexName() {
       return "profiles_id";
    }
 
@@ -87,15 +91,12 @@ class PluginEscalationProfile extends CommonDBTM {
    /**
     * Display tab
     * 
-    * @global array $LANG
-    * 
     * @param CommonGLPI $item
     * @param integer $withtemplate
     * 
     * @return varchar name of the tab(s) to display
     */
    function getTabNameForItem(CommonGLPI $item, $withtemplate=0) {
-      global $LANG;
 
       if ($item->getType()=='Profile') {
          return "Escalade";
@@ -148,7 +149,7 @@ class PluginEscalationProfile extends CommonDBTM {
     * @return nothing
     **/
    function showForm($items_id) {
-      global $LANG,$CFG_GLPI;
+      global $CFG_GLPI;
       
       if ($items_id > 0 
               AND $this->getFromDB($items_id)) {
@@ -203,7 +204,7 @@ class PluginEscalationProfile extends CommonDBTM {
          echo "<tr>";
          echo "<th colspan='4'>";
          echo "<input type='hidden' name='profile_id' value='".$items_id."'/>";
-         echo "<input type='submit' name='update' value=\"".$LANG['buttons'][7]."\" class='submit'>";
+         echo "<input type='submit' name='update' value=\"".__('Update')."\" class='submit'>";
          echo "</td>";
          echo "</tr>";
          echo "</table>";
@@ -308,7 +309,7 @@ class PluginEscalationProfile extends CommonDBTM {
     * Add a message on update action
    **/
    function addMessageOnUpdateAction() {
-      global $CFG_GLPI, $LANG;
+      global $CFG_GLPI;
 
       $link = $this->getFormURL();
       if (!isset($link)) {
@@ -332,11 +333,11 @@ class PluginEscalationProfile extends CommonDBTM {
          if (isset($profile->fields['name'])) {
             $profile->fields['name'] = stripslashes($profile->fields['name']);
          } else {
-            $profile->fields['name'] = $profile->getTypeName()." : ".$LANG['common'][2]." ".
+            $profile->fields['name'] = $profile->getTypeName()." : ".__('ID')." ".
                                     $profile->fields['id'];
          }
 
-         Session::addMessageAfterRedirect($LANG['common'][71] . "&nbsp;: " .
+         Session::addMessageAfterRedirect(__('Item successfully updated') . "&nbsp;: " .
                                  (isset($this->input['_no_message_link'])?$profile->getNameID()
                                                                          :$profile->getLink()));
       }
