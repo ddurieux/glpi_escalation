@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+    Document   : plugin.xml.xml
+    Created on : Feb 10, 2014, 11:16 PM
+    Author     : ddurieux
+    Description:
+        Purpose of the document follows.
+-->
+
+<root>
+   <name>Escalation</name>
+   <key>escalation</key>
+   <state>stable</state>
+   <logo>ttps://forge.indepnet.net/svn/escalation/escalation.png</logo>
+   <description>
+      <short>
+         <fr><![CDATA[Escalation est un plugin qui agit sur les tickets : désactivation du mode multi techniciens et multi groupes de techniciens, gestion d'un workflow d'escalade d'un groupe de technicien à un autre]]></fr>
+         <en><![CDATA[Escalation plugin work on tickets: disable mode multi technicians and multi technicians groups, manage escalade workflow from one technician group to another]]></en>
+      </short>
+      <long>
+	<fr><![CDATA[Escalation est un plugin qui agit sur les tickets :<br/>
+	<ol>
+	  <li>Forcer l'utilisation mono technicien et mono groupe de technicien (désactivation du multi technicien et multi groupe de techniciens)</li>
+	  <li>Gérer un workflow d'escalade d'un groupe de technicien à un autre (On défini que tel groupe ne peux escalader que vers tel ou tel autre groupe)</li>
+	  <li>Limiter le choix des groupes demandeurs uniquement aux groupes auxquel le rédacteur appartient</li>
+	  <li>Gestion de la configuration par entité</li>
+	</ol>]]></fr>
+	<en><![CDATA[Escalation plugin work on tickets: disable mode multi technicians and multi technicians groups, manage escalade workflow from one technician group to another]]></en>
+      </long>
+   </description>
+   <homepage>https://forge.indepnet.net/projects/escalation</homepage>
+   <download>https://forge.indepnet.net/projects/escalation/files</download>
+   <authors>
+      <author>David DURIEUX</author>
+   </authors>
+   <versions>
+      <version>
+        <num>0.83+1.2</num>
+        <compatibility>0.83.3 mini</compatibility>
+      </version>
+   </versions>
+   <langs>
+      <lang>fr_FR</lang>
+      <lang>en_GB</lang>
+   </langs>
+   <license>AGPLv3+</license>
+   <tags>
+         <fr>
+            <tag>ticket</tag>
+            <tag>workflow</tag>
+            <tag>monotech</tag>
+            <tag>escalade</tag>
+         </fr>
+         <en>
+            <tag>ticket</tag>
+            <tag>workflow</tag>
+            <tag>monotech</tag>
+            <tag>escalation</tag>
+         </en>
+   </tags>
+</root>
