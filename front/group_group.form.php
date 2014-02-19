@@ -49,7 +49,9 @@ Html::header("escalation",$_SERVER["PHP_SELF"], "plugins",
              "escalation", "group_group");
 
 // manage create under ticket
-if (isset($_POST['update']) && $_POST['createsubticket'] == 1) {
+if (isset($_POST['update']) 
+        && isset($_POST['createsubticket'])
+        && $_POST['createsubticket'] == 1) {
    PluginEscalationTicketCopy::createSubTicket($_POST['tickets_id']);
 }
 
