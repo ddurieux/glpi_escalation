@@ -29,14 +29,14 @@
 
    @package   Plugin Escalation for GLPI
    @author    David Durieux
-   @co-author 
-   @comment   
+   @co-author
+   @comment
    @copyright Copyright (c) 2011-2012 Plugin Escalation for GLPI team
    @license   AGPL License 3.0 or (at your option) any later version
               http://www.gnu.org/licenses/agpl-3.0-standalone.html
    @link      https://forge.indepnet.net/projects/escalation/
    @since     2012
- 
+
    ------------------------------------------------------------------------
  */
 
@@ -45,13 +45,13 @@ define ("PLUGIN_ESCALATION_VERSION","0.84+1.0");
 // Init the hooks of escalation
 function plugin_init_escalation() {
    global $PLUGIN_HOOKS,$CFG_GLPI;
-   
+
    $PLUGIN_HOOKS['change_profile']['escalation'] = array('PluginEscalationProfile','changeprofile');
-   
-   $PLUGIN_HOOKS['csrf_compliant']['escalation'] = true;   
-   
-   // After escalation, if user can't see the ticket (dan't see all ticket right), it redirect to ticket list 
-   if (isset($_SERVER['HTTP_REFERER']) 
+
+   $PLUGIN_HOOKS['csrf_compliant']['escalation'] = true;
+
+   // After escalation, if user can't see the ticket (dan't see all ticket right), it redirect to ticket list
+   if (isset($_SERVER['HTTP_REFERER'])
            AND strstr($_SERVER['HTTP_REFERER'], "escalation/front/group_group.form.php")) {
       if (isset($_GET['id'])) {
          $ticket = new Ticket();
@@ -66,7 +66,7 @@ function plugin_init_escalation() {
 
          $plugin = new Plugin();
          if ($plugin->isActivated('escalation')) {
-            
+
             Plugin::registerClass('PluginEscalationProfile',
                                           array('addtabon'=> array('Profile')));
             Plugin::registerClass('PluginEscalationTicketCopy',
@@ -75,11 +75,11 @@ function plugin_init_escalation() {
                                           array('addtabon'=> array('Entity')));
             Plugin::registerClass('PluginEscalationGroup_Group',
                                           array('addtabon'=> array(
-                                              'Ticket', 
+                                              'Ticket',
                                               'Group')));
-            
+
             $PLUGIN_HOOKS['menu_entry']['escalation'] = false;
-            
+
             PluginEscalationGroup_Group::convertNewTicket();
 
             // limit group
@@ -87,7 +87,7 @@ function plugin_init_escalation() {
             if ($peConfig->getValue('limitgroup', $_SESSION['glpidefault_entity']) == '1') {
                if (strpos($_SERVER['PHP_SELF'],"ticket.form.php")
                        && !isset($_GET['id'])) {
-                  
+
                   $group = new Group();
                   $a_groups = array();
                   $a_groups[0] = Dropdown::EMPTY_VALUE;
@@ -103,19 +103,19 @@ function plugin_init_escalation() {
             }
             // end limit group
          }
-         
+
          $PLUGIN_HOOKS['pre_item_add']['escalation'] = array(
              'Ticket' => array(
-                 'PluginEscalationGroup_Group', 
+                 'PluginEscalationGroup_Group',
                  'selectGroupOnAdd'));
          $PLUGIN_HOOKS['item_add']['escalation'] = array(
              'Ticket' => array(
-                 'PluginEscalationTicketCopy', 
+                 'PluginEscalationTicketCopy',
                  'finishAdd'));
-         
+
 //         $PLUGIN_HOOKS['pre_item_update']['escalation'] = array('Ticket' => array('PluginEscalationGroup_Group', 'notMultiple'));
-         
-         
+
+
       }
 
 }
@@ -134,7 +134,7 @@ function plugin_version_escalation() {
 
 // Optional : check prerequisites before install : may print errors or add to message after redirect
 function plugin_escalation_check_prerequisites() {
-   
+
    if (GLPI_VERSION >= '0.84') {
       return true;
    } else {
@@ -153,10 +153,10 @@ function plugin_escalation_haveTypeRight($type,$right) {
 
 
 function plugin_escalation_on_exit() {
-   
+
    $out = ob_get_contents();
    ob_end_clean();
-   
+
    $split = explode('pics/groupes.png', $out);
    if (!isset($split[1])) {
       echo $out;
@@ -181,26 +181,31 @@ function plugin_escalation_on_exit() {
 /*
 <option class="tree" selected="" value="3">
 <option class="tree" selected="" value="3">groupe 1 &gt; groupe 3</option>
- 
+
  */
-   
+
    $options = array();
    if (isset($a_selected[1])
            && is_numeric($a_selected[1])
            && isset($_SESSION['plugin_escalation_requestergroups'][$a_selected[1]])) {
-      
+
       $options['value'] = $a_selected[1];
    } else if (count($_SESSION['plugin_escalation_requestergroups']) == 2) {
       $a_list_tmp = array_slice($_SESSION['plugin_escalation_requestergroups'], 1, 1, TRUE);
       $options['value'] = key($a_list_tmp);
    }
-   
-   Dropdown::showFromArray("dropdown__groups_id_requester", 
+
+   if (!isset($options['value'])
+           && isset($_SESSION['plugin_escalation_groups_id_requester'])) {
+      $options['value'] = $_SESSION['plugin_escalation_groups_id_requester'];
+   }
+
+   Dropdown::showFromArray("dropdown__groups_id_requester",
                            $_SESSION['plugin_escalation_requestergroups'],
                            $options);
-   
+
    echo implode('</td>', $split2);
-   
+
 }
 
 ?>
