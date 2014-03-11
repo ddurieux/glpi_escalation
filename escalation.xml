@@ -36,6 +36,10 @@
    </authors>
    <versions>
       <version>
+        <num>0.84+1.0</num>
+        <compatibility>0.84.x</compatibility>
+      </version>
+      <version>
         <num>0.83+1.2</num>
         <compatibility>0.83.3 mini</compatibility>
       </version>
