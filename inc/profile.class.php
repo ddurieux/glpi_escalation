@@ -29,14 +29,14 @@
 
    @package   Plugin Escalation for GLPI
    @author    David Durieux
-   @co-author 
-   @comment   
+   @co-author
+   @comment
    @copyright Copyright (c) 2011-2012 Plugin Escalation for GLPI team
    @license   AGPL License 3.0 or (at your option) any later version
               http://www.gnu.org/licenses/agpl-3.0-standalone.html
    @link      https://forge.indepnet.net/projects/escalation/
    @since     2012
- 
+
    ------------------------------------------------------------------------
  */
 
@@ -47,20 +47,20 @@ if (!defined('GLPI_ROOT')) {
 
 class PluginEscalationProfile extends CommonDBTM {
 
-  
-   
+
+
    static function canView() {
       return Session::haveRight('profile','r');
    }
 
-   
-   
+
+
    static function canCreate() {
       return Session::haveRight('profile','w');
    }
 
-   
-   
+
+
    /**
     * Get the name of the index field
     *
@@ -84,16 +84,16 @@ class PluginEscalationProfile extends CommonDBTM {
          $pmProfile->add($input);
       }
    }
-   
-   
-   
+
+
+
 
    /**
     * Display tab
-    * 
+    *
     * @param CommonGLPI $item
     * @param integer $withtemplate
-    * 
+    *
     * @return varchar name of the tab(s) to display
     */
    function getTabNameForItem(CommonGLPI $item, $withtemplate=0) {
@@ -103,16 +103,16 @@ class PluginEscalationProfile extends CommonDBTM {
       }
       return '';
    }
-   
-   
- 
+
+
+
    /**
     * Display content of tab
-    * 
+    *
     * @param CommonGLPI $item
     * @param integer $tabnum
     * @param interger $withtemplate
-    * 
+    *
     * @return boolean true
     */
    static function displayTabContentForItem(CommonGLPI $item, $tabnum=1, $withtemplate=0) {
@@ -123,8 +123,8 @@ class PluginEscalationProfile extends CommonDBTM {
       }
       return true;
    }
-   
-   
+
+
 
    static function changeprofile() {
       if (isset($_SESSION['glpiactiveprofile']['id'])) {
@@ -137,8 +137,8 @@ class PluginEscalationProfile extends CommonDBTM {
       }
    }
 
-   
-   
+
+
 
     /**
     * Show profile form
@@ -150,14 +150,14 @@ class PluginEscalationProfile extends CommonDBTM {
     **/
    function showForm($items_id) {
       global $CFG_GLPI;
-      
-      if ($items_id > 0 
+
+      if ($items_id > 0
               AND $this->getFromDB($items_id)) {
-        
+
       } else {
          $this->getEmpty();
       }
-      
+
       if (!Session::haveRight("profile","r")) {
          return false;
       }
@@ -188,7 +188,7 @@ class PluginEscalationProfile extends CommonDBTM {
       Dropdown::showYesNo("copyticket", $this->fields["copyticket"]);
       echo "</td>";
       echo "</tr>";
-      
+
       echo "<tr class='tab_bg_1'>";
       echo "<td colspan='2'>";
       echo "</td>";
@@ -199,7 +199,7 @@ class PluginEscalationProfile extends CommonDBTM {
       Dropdown::showYesNo("copyticketonworkflow", $this->fields["copyticketonworkflow"]);
       echo "</td>";
       echo "</tr>";
-      
+
       if ($canedit) {
          echo "<tr>";
          echo "<th colspan='4'>";
@@ -217,7 +217,7 @@ class PluginEscalationProfile extends CommonDBTM {
       Html::closeForm();
    }
 
-   
+
 
    static function checkRight($module, $right) {
       global $CFG_GLPI;
@@ -255,8 +255,8 @@ class PluginEscalationProfile extends CommonDBTM {
       return false;
    }
 
-      
-   
+
+
    /**
     * Update the item in the database
     *
@@ -303,8 +303,8 @@ class PluginEscalationProfile extends CommonDBTM {
       return true;
    }
 
-   
-   
+
+
    /**
     * Add a message on update action
    **/

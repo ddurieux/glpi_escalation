@@ -29,14 +29,14 @@
 
    @package   Plugin Escalation for GLPI
    @author    David Durieux
-   @co-author 
-   @comment   
+   @co-author
+   @comment
    @copyright Copyright (c) 2011-2012 Plugin Escalation for GLPI team
    @license   AGPL License 3.0 or (at your option) any later version
               http://www.gnu.org/licenses/agpl-3.0-standalone.html
    @link      https://forge.indepnet.net/projects/escalation/
    @since     2012
- 
+
    ------------------------------------------------------------------------
  */
 
@@ -45,7 +45,7 @@ if (!defined('GLPI_ROOT')) {
 }
 
 class PluginEscalationConfig extends CommonDBTM {
-   
+
    /**
    * Get name of this type
    *
@@ -55,21 +55,21 @@ class PluginEscalationConfig extends CommonDBTM {
    static function getTypeName($nb=0) {
       return __('Configuration');
    }
-   
-   
+
+
 
    static function canCreate() {
       return true;
    }
 
 
-   
+
    static function canView() {
       return true;
    }
 
-   
- 
+
+
    /**
     * Display tab
     *
@@ -107,13 +107,13 @@ class PluginEscalationConfig extends CommonDBTM {
       }
       return TRUE;
    }
-   
 
-   
+
+
    /**
    * Display form for service configuration
    *
-   * @param $items_id integer ID 
+   * @param $items_id integer ID
    * @param $options array
    *
    *@return bool true if form is ok
@@ -129,9 +129,9 @@ class PluginEscalationConfig extends CommonDBTM {
       } else {
          $this->getEmpty();
       }
-      
+
       $this->showFormHeader($options);
-      
+
       echo "<tr>";
       echo "<td>";
       echo "<input type='hidden' name='entities_id' value='".$entities_id."' />";
@@ -152,7 +152,7 @@ class PluginEscalationConfig extends CommonDBTM {
       $value = str_replace("++", "+", $value);
       Dropdown::showFromArray("unique_assigned", $elements, array('value' => $value));
       echo "</td>";
-      
+
       echo "<td>Workflow&nbsp;:</td>";
       echo "<td>";
       if ($entities_id == '0') {
@@ -167,13 +167,13 @@ class PluginEscalationConfig extends CommonDBTM {
       }
       $value = (is_null($this->fields['workflow']) ? "NULL" : "+".$this->fields['workflow']);
       $value = str_replace("++", "+", $value);
-      
+
       $value = (is_null($this->fields['workflow']) ? "NULL" : "+".$this->fields['workflow']);
 
       Dropdown::showFromArray("workflow", $elements, array('value' => $value));
       echo "</td>";
       echo "</tr>";
-      
+
       echo "<tr>";
       echo "<td>Limiter groupes demandeurs des groupes du rédacteur&nbsp;:</td>";
       echo "<td>";
@@ -189,31 +189,31 @@ class PluginEscalationConfig extends CommonDBTM {
       }
       $value = (is_null($this->fields['limitgroup']) ? "NULL" : "+".$this->fields['limitgroup']);
       $value = str_replace("++", "+", $value);
-      
+
       Dropdown::showFromArray("limitgroup", $elements, array('value' => $value));
       echo "</td>";
       echo "<td colspan='2'>";
       echo "</td>";
       echo "</tr>";
-      
+
       $this->showFormButtons($options);
-      
+
       return true;
    }
-   
-   
-   
+
+
+
 /**
     * Get value of config
-    * 
+    *
     * @global object $DB
-    * @param value $name field name 
+    * @param value $name field name
     * @param integer $entities_id
-    * 
-    * @return value of field 
+    *
+    * @return value of field
     */
    function getValueAncestor($name, $entities_id) {
-      global $DB;      
+      global $DB;
 
       $entities_ancestors = getAncestorsOf("glpi_entities", $entities_id);
 
@@ -231,23 +231,23 @@ class PluginEscalationConfig extends CommonDBTM {
          }
       }
       $this->getFromDB(1);
-      return $this->getField($name);      
+      return $this->getField($name);
    }
-   
-   
-   
+
+
+
    /**
     * Get the value (of this entity or parent entity or in general config
     *
     * @global object $DB
     * @param value $name field name
     * @param integet $entities_id
-    * 
-    * @return value value of this field 
+    *
+    * @return value value of this field
     */
    function getValue($name, $entities_id) {
       global $DB;
-      
+
       $query = "SELECT `".$name."` FROM `".$this->getTable()."`
          WHERE `entities_id`='".$entities_id."'
             AND `".$name."` IS NOT NULL
@@ -259,7 +259,7 @@ class PluginEscalationConfig extends CommonDBTM {
       }
       return $this->getValueAncestor($name, $entities_id);
    }
-      
+
 }
 
 ?>
