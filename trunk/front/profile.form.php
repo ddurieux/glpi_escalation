@@ -29,14 +29,14 @@
 
    @package   Plugin Escalation for GLPI
    @author    David Durieux
-   @co-author 
-   @comment   
+   @co-author
+   @comment
    @copyright Copyright (c) 2011-2012 Plugin Escalation for GLPI team
    @license   AGPL License 3.0 or (at your option) any later version
               http://www.gnu.org/licenses/agpl-3.0-standalone.html
    @link      https://forge.indepnet.net/projects/escalation/
    @since     2012
- 
+
    ------------------------------------------------------------------------
  */
 
@@ -51,7 +51,7 @@ Session::checkRight("profile","r");
 $peProfile = new PluginEscalationProfile();
 
 Session::checkRight("profile","w");
-   
+
 if ($peProfile->getFromDB($_POST['profiles_id'])) {
    $peProfile->update($_POST);
    $peProfile->changeprofile();

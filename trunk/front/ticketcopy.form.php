@@ -29,14 +29,14 @@
 
    @package   Plugin Escalation for GLPI
    @author    David Durieux
-   @co-author 
-   @comment   
+   @co-author
+   @comment
    @copyright Copyright (c) 2011-2012 Plugin Escalation for GLPI team
    @license   AGPL License 3.0 or (at your option) any later version
               http://www.gnu.org/licenses/agpl-3.0-standalone.html
    @link      https://forge.indepnet.net/projects/escalation/
    @since     2013
- 
+
    ------------------------------------------------------------------------
  */
 
@@ -45,14 +45,14 @@ define('GLPI_ROOT', '../../..');
 include (GLPI_ROOT . "/inc/includes.php");
 
 
-Html::header("escalation",$_SERVER["PHP_SELF"], "plugins", 
+Html::header("escalation",$_SERVER["PHP_SELF"], "plugins",
              "escalation", "ticketcopy");
 
 if (isset($_POST['add'])) {
    $a_saved = array();
 
    $_SESSION['plugin_escalation_ticketcopy'] = array();
-   
+
    foreach ($_POST['checked'] as $name) {
       $a_saved[$name] = $_POST[$name];
    }
@@ -65,9 +65,9 @@ if (isset($_POST['add'])) {
 
    // * Manage requester
    if (isset($_POST['_users_id_requester'])) {
-      
+
    }
-      
+
    if (isset($_POST['_groups_id_requester'])) {
       $a_saved['_groups_id_requester'] = $_POST['_groups_id_requester'];
    }
@@ -80,11 +80,11 @@ if (isset($_POST['add'])) {
          $_SESSION['plugin_escalation_ticketcopy']['task'][$value] = $value;
       }
    }
-   
+
    // * Manage assign
-   
+
    $_SESSION['helpdeskSaved'] = $a_saved;
-   
+
    Html::redirect($CFG_GLPI['root_doc'].'/front/ticket.form.php');
 }
 Html::back();

@@ -29,14 +29,14 @@
 
    @package   Plugin Escalation for GLPI
    @author    David Durieux
-   @co-author 
-   @comment   
+   @co-author
+   @comment
    @copyright Copyright (c) 2011-2012 Plugin Escalation for GLPI team
    @license   AGPL License 3.0 or (at your option) any later version
               http://www.gnu.org/licenses/agpl-3.0-standalone.html
    @link      https://forge.indepnet.net/projects/escalation/
    @since     2012
- 
+
    ------------------------------------------------------------------------
  */
 
@@ -67,7 +67,7 @@ function plugin_escalation_install() {
          ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;");
          $DB->query("INSERT INTO `glpi_plugin_escalation_configs`
             (`id` ,`entities_id` ,`unique_assigned` ,`workflow`, `limitgroup`)
-         VALUES (NULL , '0', '0', '0', '0');");         
+         VALUES (NULL , '0', '0', '0', '0');");
       }
       if (!TableExists("glpi_plugin_escalation_profiles")) {
          $DB->query("CREATE TABLE `glpi_plugin_escalation_profiles` (
@@ -76,11 +76,11 @@ function plugin_escalation_install() {
            `copyticket` char(1) COLLATE utf8_unicode_ci DEFAULT NULL,
            `copyticketonworkflow` char(1) COLLATE utf8_unicode_ci DEFAULT NULL
          ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;");
-      }   
+      }
       if (!FieldExists('glpi_plugin_escalation_profiles', 'copyticket')) {
-         $DB->query("ALTER TABLE `glpi_plugin_escalation_profiles` 
+         $DB->query("ALTER TABLE `glpi_plugin_escalation_profiles`
             ADD `copyticket` CHAR( 1 ) NULL ");
-         $DB->query("ALTER TABLE `glpi_plugin_escalation_profiles` 
+         $DB->query("ALTER TABLE `glpi_plugin_escalation_profiles`
             ADD `copyticketonworkflow` CHAR( 1 ) NULL ");
       }
       if (!FieldExists("glpi_plugin_escalation_configs", "limitgroup")) {
@@ -89,7 +89,7 @@ function plugin_escalation_install() {
                               "limitgroup",
                               "varchar(255) DEFAULT NULL");
          $migration->migrationOneTable('glpi_plugin_escalation_configs');
-         $DB->query("UPDATE `glpi_plugin_escalation_configs` 
+         $DB->query("UPDATE `glpi_plugin_escalation_configs`
             SET `limitgroup` = '0' WHERE `entities_id` =1");
       }
    }
@@ -101,7 +101,7 @@ function plugin_escalation_install() {
 // Uninstall process for plugin : need to return true if succeeded
 function plugin_escalation_uninstall() {
    global $DB;
-   
+
    $query = "SHOW TABLES;";
    $result=$DB->query($query);
    while ($data=$DB->fetch_array($result)) {
@@ -110,7 +110,7 @@ function plugin_escalation_uninstall() {
          $DB->query($query_delete) or die($DB->error());
       }
    }
-   
+
    return true;
 }
 
