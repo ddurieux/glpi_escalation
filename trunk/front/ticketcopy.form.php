@@ -82,8 +82,7 @@ if (isset($_POST['add'])) {
    }
 
    // * Manage assign
-
-   $_SESSION['helpdeskSaved'] = $a_saved;
+   $_SESSION['saveInput']['Ticket'] = $a_saved;
 
    Html::redirect($CFG_GLPI['root_doc'].'/front/ticket.form.php');
 }
