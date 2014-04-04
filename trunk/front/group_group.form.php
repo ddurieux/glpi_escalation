@@ -65,8 +65,8 @@ if (isset($_POST['update']) && $_POST['group_assign'] > 0) {
       $input['id'] = $_POST['tickets_id'];
       $input['_itil_assign'] = array('_type'=>'group','groups_id'=>$_POST['group_assign']);
       $ticket->getFromDB($_POST['tickets_id']);
-      if ($ticket->fields['status'] == 'waiting') {
-         $input['status'] = 'assign';
+      if ($ticket->fields['status'] == Ticket::WAITING) {
+         $input['status'] = Ticket::ASSIGNED;
       }
       $input['_disablenotif'] = true;
       $ticket->update($input);
