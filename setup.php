@@ -85,7 +85,8 @@ function plugin_init_escalation() {
             // limit group
             $peConfig = new PluginEscalationConfig();
             if ($peConfig->getValue('limitgroup', $_SESSION['glpidefault_entity']) == '1') {
-               if (strpos($_SERVER['PHP_SELF'],"ticket.form.php")
+               if ((strpos($_SERVER['PHP_SELF'],"ticket.form.php")
+                       OR strpos($_SERVER['PHP_SELF'],"problem.form.php"))
                        && !isset($_GET['id'])) {
 
                   $group = new Group();
