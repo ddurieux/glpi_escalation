@@ -564,6 +564,7 @@ class PluginEscalationGroup_Group extends CommonDBRelation {
                      AND `tickets_id`='".$item->getID()."'");
                   if (count($a_groups) > 0) {
                      foreach ($a_groups as $data) {
+                        $data['_disablenotif'] = True;
                         $group_Ticket->delete($data);
                      }
                   }
@@ -573,6 +574,7 @@ class PluginEscalationGroup_Group extends CommonDBRelation {
                      if (countElementsInTable($group_User->getTable(),
                              "`users_id`='".$data['users_id']."'
                              AND `groups_id`='".$item->input['_itil_assign']['groups_id']."'") == '0') {
+                        $data['_disablenotif'] = True;
                         $ticket_User->delete($data);
                      }
                   }
