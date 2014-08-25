@@ -50,7 +50,7 @@ Html::header("escalation",$_SERVER["PHP_SELF"], "plugins",
 
 if (isset($_POST['add'])) {
    $a_saved = array();
-
+   
    $_SESSION['plugin_escalation_ticketcopy'] = array();
 
    foreach ($_POST['checked'] as $name) {
@@ -65,7 +65,7 @@ if (isset($_POST['add'])) {
 
    // * Manage requester
    if (isset($_POST['_users_id_requester'])) {
-
+      $a_saved['_users_id_requester'] = $_POST['_users_id_requester'];
    }
 
    if (isset($_POST['_groups_id_requester'])) {
