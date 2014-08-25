@@ -183,7 +183,7 @@ class PluginEscalationTicketCopy extends CommonDBRelation {
             $name = Dropdown::getDropdownName('glpi_users', $data['users_id']);
          }
          $this->displayField(__('Requester'), "_users_id_requester",
-            $name, $data['id']);
+            $name, $data['users_id']);
       }
 
       $group_Ticket = new Group_Ticket();
