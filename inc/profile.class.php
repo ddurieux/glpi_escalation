@@ -171,18 +171,18 @@ class PluginEscalationProfile extends CommonDBTM {
       echo "<table class='tab_cadre_fixe'>";
 
       echo "<tr>";
-      echo "<th colspan='4'>Escalation :</th>";
+      echo "<th colspan='4'>".__('Escalation', 'escalation')." :</th>";
       echo "</tr>";
 
       echo "<tr class='tab_bg_1'>";
       echo "<td>";
-      echo "Bypass workflow&nbsp;:";
+      echo __('Bypass workflow', 'escalation')."&nbsp;:";
       echo "</td>";
       echo "<td>";
       Dropdown::showYesNo("bypassworkflow", $this->fields["bypassworkflow"]);
       echo "</td>";
       echo "<td>";
-      echo "Copier ticket";
+      echo __('Copy ticket', 'escalation');
       echo "</td>";
       echo "<td>";
       Dropdown::showYesNo("copyticket", $this->fields["copyticket"]);
@@ -193,7 +193,7 @@ class PluginEscalationProfile extends CommonDBTM {
       echo "<td colspan='2'>";
       echo "</td>";
       echo "<td>";
-      echo "Créer sous-ticket lors d'une escalade (workflow)";
+      echo __('Create child ticket when escalation (workflow)', 'escalation');
       echo "</td>";
       echo "<td>";
       Dropdown::showYesNo("copyticketonworkflow", $this->fields["copyticketonworkflow"]);
