@@ -433,10 +433,10 @@ class PluginEscalationGroup_Group extends CommonDBRelation {
                   $resultg = $DB->query($queryg);
                   while ($datag=$DB->fetch_array($resultg)) {
                      $group->getFromDB($datag['groups_id_destination']);
-                     $a_groups[$groups_id."_".$datag['groups_id_destination']] = "&nbsp;&nbsp;&nbsp;> ".$group->getName();
+                     $a_groups[$datag['groups_id_destination']] = $group->getName();
                   }
                }
-
+               asort($a_groups);
                $rand = Dropdown::showFromArray("_groups_id_assign_escalation", $a_groups);
 
                $params = array('groups_id'   => '__VALUE__',
