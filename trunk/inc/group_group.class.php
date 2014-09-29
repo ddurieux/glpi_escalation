@@ -67,7 +67,7 @@ class PluginEscalationGroup_Group extends CommonDBRelation {
             if (PluginEscalationProfile::haveRight("bypassworkflow", 1)
                     OR $peGroup_group->is_user_tech($item->getID())) {
 
-               return "Escalade";
+               return __('Escalation', 'escalation');
             }
          }
       } else if ($item->getType() == 'Group'
@@ -75,7 +75,7 @@ class PluginEscalationGroup_Group extends CommonDBRelation {
               && $_SESSION['glpiactiveprofile']['interface'] == 'central') {
          $peConfig = new PluginEscalationConfig();
          if ($peConfig->getValue('workflow', $item->fields['entities_id']) == '1') {
-            return "Escalade";
+            return __('Escalation', 'escalation');
          }
       }
       return '';
@@ -134,7 +134,7 @@ class PluginEscalationGroup_Group extends CommonDBRelation {
 
       echo "<tr>";
       echo "<th colspan='4'>";
-      echo "Escalade";
+      echo __('Escalation', 'escalation');
       echo "</th>";
       echo "</tr>";
 
@@ -153,8 +153,8 @@ class PluginEscalationGroup_Group extends CommonDBRelation {
 
          echo "<tr class='tab_bg_1' id='groupadd'>";
          echo "<td width='200'>";
-         echo "Escalade vers le groupe ";
-         echo "</td>";
+         echo __('Escalation to group', 'escalation');
+         echo " </td>";
          echo "<td>";
          if (PluginEscalationProfile::haveRight("bypassworkflow", 1)) {
             Dropdown::show('Group', array('name'      => 'group_assign',
@@ -170,7 +170,7 @@ class PluginEscalationGroup_Group extends CommonDBRelation {
          echo "</td>";
          if ($createticketRight) {
             echo "<th colspan='2'>";
-            echo "Créer sous-ticket";
+            echo __('Create child ticket', 'escalation');
             echo "</th>";
          } else {
             echo "<td colspan='2'>";
@@ -186,7 +186,7 @@ class PluginEscalationGroup_Group extends CommonDBRelation {
          echo "</td>";
          if ($createticketRight) {
             echo "<td>";
-            echo "Créer sous-ticket";
+            echo __('Create child ticket', 'escalation');
             echo "</td>";
             echo "<td>";
             Dropdown::showYesNo("createsubticket");
@@ -199,7 +199,7 @@ class PluginEscalationGroup_Group extends CommonDBRelation {
 
          echo "<tr class='tab_bg_1' id='useradd'>";
          echo "<td>";
-         echo "Escalade vers le technicien";
+         echo __('Escalation to technician', 'escalation');
          echo "</td>";
          echo "<td>";
          $user = new User();
@@ -215,7 +215,7 @@ class PluginEscalationGroup_Group extends CommonDBRelation {
          echo "</td>";
          if ($createticketRight) {
             echo "<td>";
-            echo "SLA à appliquer";
+            echo __('SLA to use', 'escalation');
             echo "</td>";
             echo "<td>";
             Dropdown::show('Sla',array('entity' => $ticket->fields["entities_id"]));
@@ -232,7 +232,7 @@ class PluginEscalationGroup_Group extends CommonDBRelation {
          echo "</td>";
          if ($createticketRight) {
             echo "<td>";
-            echo "Groupe de technicien assigné";
+            echo __('Technician group assigned', 'escalation');
             echo "</td>";
             echo "<td>";
             if (PluginEscalationProfile::haveRight("bypassworkflow", 1)) {
@@ -258,8 +258,8 @@ class PluginEscalationGroup_Group extends CommonDBRelation {
       } else {
          echo "<tr class='tab_bg_1'>";
          echo "<td>";
-         echo "Escalade vers le groupe ";
-         echo "</td>";
+         echo __('Escalation to group', 'escalation');
+         echo " </td>";
          echo "<td>";
          $a_groups = array();
          foreach($_SESSION['glpigroups'] as $groups_id) {
@@ -327,7 +327,7 @@ class PluginEscalationGroup_Group extends CommonDBRelation {
 
       echo "<tr>";
       echo "<th colspan='2'>";
-      echo "Escalade";
+      echo __('Escalation', 'escalation');
       echo "</th>";
       echo "</tr>";
 
@@ -415,7 +415,7 @@ class PluginEscalationGroup_Group extends CommonDBRelation {
                echo "<table class='tab_cadre_fixe'>";
 
                echo "<tr class='tab_bg_1'>";
-               echo "<th colspan='2'>Sélection du groupe de techniciens</th>";
+               echo "<th colspan='2'>".__('Select techicians group', 'escalation')."</th>";
                echo "</tr>";
 
                echo "<tr class='tab_bg_1'>";

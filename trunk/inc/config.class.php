@@ -83,7 +83,7 @@ class PluginEscalationConfig extends CommonDBTM {
       if ($item->getType() == 'Entity'
               && $item->getID() > -1
               && Session::haveRight("entity", 'r')) {
-         return "Escalade";
+         return __('Escalation', 'escalation');
       }
       return '';
    }
@@ -135,7 +135,7 @@ class PluginEscalationConfig extends CommonDBTM {
       echo "<tr>";
       echo "<td>";
       echo "<input type='hidden' name='entities_id' value='".$entities_id."' />";
-      echo "Attribution unique&nbsp;:";
+      echo __('Unique assigned to', 'escalation')."&nbsp;:";
       echo "</td>";
       echo "<td>";
       if ($entities_id == '0') {
@@ -153,7 +153,7 @@ class PluginEscalationConfig extends CommonDBTM {
       Dropdown::showFromArray("unique_assigned", $elements, array('value' => $value));
       echo "</td>";
 
-      echo "<td>Workflow&nbsp;:</td>";
+      echo "<td>".__('Workflow', 'escalation')."&nbsp;:</td>";
       echo "<td>";
       if ($entities_id == '0') {
          $elements = array("+0" => __('No'),
@@ -175,7 +175,7 @@ class PluginEscalationConfig extends CommonDBTM {
       echo "</tr>";
 
       echo "<tr>";
-      echo "<td>Limiter groupes demandeurs des groupes du rédacteur&nbsp;:</td>";
+      echo "<td>".__('Limit requester groups from writer groups', 'escalation')."&nbsp;:</td>";
       echo "<td>";
       if ($entities_id == '0') {
          $elements = array("+0" => __('No'),

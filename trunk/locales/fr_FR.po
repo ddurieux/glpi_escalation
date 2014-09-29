@@ -1,0 +1,85 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# 
+# Translators:
+# David Durieux <d.durieux@siprossii.com>, 2014
+msgid ""
+msgstr ""
+"Project-Id-Version: GLPI Project - plugin escalation\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-09-29 15:24+0200\n"
+"PO-Revision-Date: 2014-09-29 14:42+0000\n"
+"Last-Translator: David Durieux <d.durieux@siprossii.com>\n"
+"Language-Team: French (France) (http://www.transifex.com/projects/p/glpi_escalation/language/fr_FR/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: fr_FR\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: inc/config.class.php:86 inc/group_group.class.php:70
+#: inc/group_group.class.php:78 inc/group_group.class.php:137
+#: inc/group_group.class.php:330 inc/profile.class.php:174
+msgid "Escalation"
+msgstr "Escalade"
+
+#: inc/config.class.php:138
+msgid "Unique assigned to"
+msgstr "Attribution unique"
+
+#: inc/config.class.php:156
+msgid "Workflow"
+msgstr "Workflow"
+
+#: inc/config.class.php:178
+msgid "Limit requester groups from writer groups"
+msgstr "Limiter groupes demandeurs des groupes du rédacteur"
+
+#: inc/group_group.class.php:156 inc/group_group.class.php:261
+msgid "Escalation to group"
+msgstr "Escalade vers le groupe"
+
+#: inc/group_group.class.php:173 inc/group_group.class.php:189
+msgid "Create child ticket"
+msgstr "Créer un ticket enfant"
+
+#: inc/group_group.class.php:202
+msgid "Escalation to technician"
+msgstr "Escalade vers le technicien"
+
+#: inc/group_group.class.php:218
+msgid "SLA to use"
+msgstr "SLA à appliquer"
+
+#: inc/group_group.class.php:235
+msgid "Technician group assigned"
+msgstr "Groupe de technicien assigné"
+
+#: inc/group_group.class.php:418
+msgid "Select techicians group"
+msgstr "Sélection du groupe de technicien"
+
+#: inc/profile.class.php:179
+msgid "Bypass workflow"
+msgstr "Outrepasser le workflow"
+
+#: inc/profile.class.php:185 inc/ticketcopy.class.php:62
+msgid "Copy ticket"
+msgstr "Copier ticket"
+
+#: inc/profile.class.php:196
+msgid "Create child ticket when escalation (workflow)"
+msgstr "Créer  un ticket enfant lors d'une escalade (workflow)"
+
+#: inc/ticketcopy.class.php:98
+msgid "Copy ticket (fields list to copy)"
+msgstr "Copie de ticket (liste des champs à copier)"
+
+#: inc/ticketcopy.class.php:106
+msgid "See all fields"
+msgstr "Voir tous les champs"
+
+#: inc/ticketcopy.class.php:114
+msgid "Link to ticket"
+msgstr "Lier au ticket"

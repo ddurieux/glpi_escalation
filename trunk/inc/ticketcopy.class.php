@@ -59,7 +59,7 @@ class PluginEscalationTicketCopy extends CommonDBRelation {
       if ($item->getType()=='Ticket'
               && $item->getID() > 0
               && PluginEscalationProfile::haveRight("copyticket", 1)) {
-         return "Copie de ticket";
+         return __('Copy ticket', 'escalation');
       }
       return '';
    }
@@ -95,7 +95,7 @@ class PluginEscalationTicketCopy extends CommonDBRelation {
 
       echo "<tr>";
       echo "<th colspan='3'>";
-      echo "Copie de ticket (Liste des champs à copier)";
+      echo __('Copy ticket (fields list to copy)', 'escalation');
       echo "</th>";
       echo "</tr>";
 
@@ -103,7 +103,7 @@ class PluginEscalationTicketCopy extends CommonDBRelation {
       echo "<td colspan='3' align='center'>";
       echo "<a href=\"javascript:showHideDiv('listfields','imgcat0','../../pics/folder.png',".
               "'../../pics/folder-open.png');\">";
-      echo "Voir tous les champs</a>";
+      echo __('See all fields', 'escalation')."</a>";
       echo "</td>";
       echo "</tr>";
 
@@ -111,7 +111,7 @@ class PluginEscalationTicketCopy extends CommonDBRelation {
       echo "<td>";
       echo "</td>";
       echo "<td>";
-      echo "Lier au ticket";
+      echo __('Link to ticket', 'escalation');
       echo "</td>";
       echo "<td>";
       Dropdown::showYesNo('link');
@@ -253,7 +253,7 @@ class PluginEscalationTicketCopy extends CommonDBRelation {
       echo "<table width='950' class='tab_cadre_fixe'>";
       echo "<tr class='tab_bg_3'>";
       echo "<td class='center'>";
-      echo "<input type='submit' name='add' value=\"Créer\" class='submit'>";
+      echo "<input type='submit' name='add' value=\""._sx('button', 'Add')."\" class='submit'>";
       echo "<input type='hidden' name='tickets_id' value='".$ticket->fields['id']."'>";
       echo "</td>";
       echo "</tr>";
