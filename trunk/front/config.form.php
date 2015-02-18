@@ -43,7 +43,7 @@
 define('GLPI_ROOT', '../../..');
 include (GLPI_ROOT . "/inc/includes.php");
 
-Session::checkRight("entity","w");
+Session::checkRight("entity", UPDATE);
 
 Html::header("escalation",$_SERVER["PHP_SELF"], "plugins", "escalation", "config");
 
