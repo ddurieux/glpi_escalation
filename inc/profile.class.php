@@ -48,18 +48,7 @@ if (!defined('GLPI_ROOT')) {
 class PluginEscalationProfile extends CommonDBTM {
 
 
-
-   static function canView() {
-      return Session::haveRight('profile','r');
-   }
-
-
-
-   static function canCreate() {
-      return Session::haveRight('profile','w');
-   }
-
-
+   static $rightname = 'profile';
 
    /**
     * Get the name of the index field
@@ -158,10 +147,10 @@ class PluginEscalationProfile extends CommonDBTM {
          $this->getEmpty();
       }
 
-      if (!Session::haveRight("profile","r")) {
+      if (!Session::haveRight("profile", READ)) {
          return false;
       }
-      $canedit=Session::haveRight("profile","w");
+      $canedit=Session::haveRight("profile", UPDATE);
       if ($canedit) {
          echo "<form method='post' action='".$CFG_GLPI['root_doc']."/plugins/escalation/front/profile.form.php'>";
          echo '<input type="hidden" name="profiles_id" value="'.$items_id.'"/>';

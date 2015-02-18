@@ -46,6 +46,8 @@ if (!defined('GLPI_ROOT')) {
 
 class PluginEscalationConfig extends CommonDBTM {
 
+   static $rightname = 'config';
+
    /**
    * Get name of this type
    *
@@ -54,18 +56,6 @@ class PluginEscalationConfig extends CommonDBTM {
    **/
    static function getTypeName($nb=0) {
       return __('Configuration');
-   }
-
-
-
-   static function canCreate() {
-      return true;
-   }
-
-
-
-   static function canView() {
-      return true;
    }
 
 
@@ -82,7 +72,7 @@ class PluginEscalationConfig extends CommonDBTM {
 
       if ($item->getType() == 'Entity'
               && $item->getID() > -1
-              && Session::haveRight("entity", 'r')) {
+              && Session::haveRight("entity", READ)) {
          return __('Escalation', 'escalation');
       }
       return '';

@@ -40,11 +40,11 @@
    ------------------------------------------------------------------------
  */
 
-define ("PLUGIN_ESCALATION_VERSION","0.84+1.4");
+define ("PLUGIN_ESCALATION_VERSION","0.85+1.0");
 
 // Init the hooks of escalation
 function plugin_init_escalation() {
-   global $PLUGIN_HOOKS,$CFG_GLPI;
+   global $PLUGIN_HOOKS;
 
    $PLUGIN_HOOKS['change_profile']['escalation'] = array('PluginEscalationProfile','changeprofile');
 
@@ -128,7 +128,7 @@ function plugin_version_escalation() {
                 'version'        => PLUGIN_ESCALATION_VERSION,
                 'author'         =>'<a href="mailto:d.durieux@siprossii.com">David DURIEUX</a>',
                 'homepage'       =>'',
-                'minGlpiVersion' => '0.84'
+                'minGlpiVersion' => '0.85'
    );
 }
 
@@ -136,11 +136,11 @@ function plugin_version_escalation() {
 // Optional : check prerequisites before install : may print errors or add to message after redirect
 function plugin_escalation_check_prerequisites() {
 
-   if (GLPI_VERSION >= '0.84') {
-      return true;
-   } else {
-      echo "error";
+   if (version_compare(GLPI_VERSION, '0.85', 'lt') || version_compare(GLPI_VERSION, '0.86', 'ge')) {
+      echo __('Your GLPI version not compatible, require 0.85', 'escalation');
+      return FALSE;
    }
+   return true;
 }
 
 function plugin_escalation_check_config() {

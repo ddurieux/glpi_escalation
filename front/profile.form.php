@@ -45,12 +45,10 @@ if (!defined('GLPI_ROOT')) {
 }
 
 include_once (GLPI_ROOT . "/inc/includes.php");
-Session::checkRight("profile","r");
-
 
 $peProfile = new PluginEscalationProfile();
 
-Session::checkRight("profile","w");
+Session::checkRight("profile", UPDATE);
 
 if ($peProfile->getFromDB($_POST['profiles_id'])) {
    $peProfile->update($_POST);
