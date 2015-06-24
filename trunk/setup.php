@@ -91,15 +91,26 @@ function plugin_init_escalation() {
 
                   $group = new Group();
                   $a_groups = array();
-                  $a_groups[0] = Dropdown::EMPTY_VALUE;
                   foreach($_SESSION['glpigroups'] as $groups_id) {
-                     $group->getFromDB($groups_id);
-                     $a_groups[$groups_id] = $group->getName();
+                     $a_groups[$groups_id] = $groups_id;
                   }
                   $_SESSION['plugin_escalation_requestergroups'] = $a_groups;
 
-                  register_shutdown_function('plugin_escalation_on_exit');
-                  ob_start();
+               }
+               if (strpos($_SERVER['PHP_SELF'],"getDropdownValue.php")) {
+                  if (isset($_GET['itemtype'])
+                          && $_GET['itemtype'] == 'Group') {
+                     if (count($_SESSION['plugin_escalation_requestergroups']) > 0) {
+                        if (isset($_GET['condition'])
+                                && !empty($_GET['condition'])
+                                && $_SESSION['glpicondition'][$_GET['condition']] == '`is_requester`') {
+                           $_SESSION['glpicondition'][$_GET['condition']."-restrict"] = $_SESSION['glpicondition'][$_GET['condition']].
+                                   " AND `id` IN ('".  implode("', '", $_SESSION['plugin_escalation_requestergroups'])."')";
+                           $_GET['condition'] .= "-restrict";
+                        }
+//                        $_GET['condition'] = " `id` IN ('".  implode("', '", $_SESSION['plugin_escalation_requestergroups'])."')";
+                     }
+                  }
                }
             }
             // end limit group
