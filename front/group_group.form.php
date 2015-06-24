@@ -56,8 +56,8 @@ if (isset($_POST['update'])
 }
 
 if (isset($_POST['update']) && $_POST['group_assign'] > 0) {
-   $assign_ticket_right = $_SESSION['glpiactiveprofile']['assign_ticket'];
-   $_SESSION['glpiactiveprofile']['assign_ticket'] = 1;
+   $assign_ticket_right = $_SESSION['glpiactiveprofile']['ticket'];
+   $_SESSION['glpiactiveprofile']['ticket'] = 128031;
 
    // Add group
       $ticket = new Ticket();
@@ -89,7 +89,7 @@ if (isset($_POST['update']) && $_POST['group_assign'] > 0) {
               "tracking", $_SESSION["glpiname"]." ".__('Deletion of an actor to the ticket'));
          }
       }
-      $_SESSION['glpiactiveprofile']['assign_ticket'] = $assign_ticket_right;
+      $_SESSION['glpiactiveprofile']['ticket'] = $assign_ticket_right;
 
    // delete group
       $group_ticket = new Group_Ticket();
@@ -105,8 +105,8 @@ if (isset($_POST['update']) && $_POST['group_assign'] > 0) {
       }
    Html::back();
 } else if (isset($_POST['update']) AND $_POST['_users_id_assign'] > 0) {
-   $assign_ticket_right = $_SESSION['glpiactiveprofile']['assign_ticket'];
-   $_SESSION['glpiactiveprofile']['assign_ticket'] = 1;
+   $assign_ticket_right = $_SESSION['glpiactiveprofile']['ticket'];
+   $_SESSION['glpiactiveprofile']['ticket'] = 128031;
    // Add
    $ticket = new Ticket();
    $input = array();
@@ -124,7 +124,7 @@ if (isset($_POST['update']) && $_POST['group_assign'] > 0) {
               "tracking", $_SESSION["glpiname"]." ".__('Deletion of an actor to the ticket'));
          }
       }
-   $_SESSION['glpiactiveprofile']['assign_ticket'] = $assign_ticket_right;
+   $_SESSION['glpiactiveprofile']['ticket'] = $assign_ticket_right;
    Html::back();
 } else if (isset($_POST['addgroup'])) {
    $peGroup_Group = new PluginEscalationGroup_Group();
