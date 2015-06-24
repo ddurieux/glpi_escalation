@@ -514,22 +514,7 @@ class PluginEscalationGroup_Group extends CommonDBRelation {
    }
 
 
-//   static function allowAssignRight($item) {
-//      if ($_SESSION['glpiactiveprofile']['interface'] == 'central') {
-//         $_SESSION['pluginescalation']['assign_ticket'] = $_SESSION['glpiactiveprofile']['assign_ticket'];
-//         $_SESSION['glpiactiveprofile']['assign_ticket'] = 1;
-//      }
-//   }
-//
-//
-//
-//   static function restoreAssignRight($item) {
-//      if ($_SESSION['glpiactiveprofile']['interface'] == 'central') {
-//         $_SESSION['glpiactiveprofile']['assign_ticket'] = $_SESSION['pluginescalation']['assign_ticket'];
-//      }
-//   }
-
-
+   
    static function notMultiple($item) {
       if ($_SESSION['glpiactiveprofile']['interface'] == 'central') {
 
