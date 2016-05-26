@@ -152,15 +152,20 @@ class PluginEscalationTicketCopy extends CommonDBRelation {
          Dropdown::getDropdownName('glpi_itilcategories', $ticket->fields['itilcategories_id']),
          $ticket->fields['itilcategories_id']);
 
-      if ($ticket->fields['items_id'] > 0) {
+      //// *************************************
+      $item_Ticket = new Item_Ticket();
+      $a_associed_items = $item_Ticket->find("`tickets_id`='".$ticket->getID()."'");
+      foreach ($a_associed_items as $data) {
          $this->displayField(__('Associated element').' - '.__('Type'), "itemtype",
-            call_user_func(array($ticket->fields['itemtype'], 'getTypeName')),
-            $ticket->fields['itemtype']);
+            call_user_func(array($data['itemtype'], 'getTypeName')),
+            $data['itemtype']);
 
-         $this->displayField(__('Associated element'), "items_id",
-         Dropdown::getDropdownName(getTableForItemType($ticket->fields['itemtype']),
-                                   $ticket->fields['items_id']),
-         $ticket->fields['items_id']);
+         $this->displayField(
+                 __('Associated element'),
+                 "items_id",
+                 Dropdown::getDropdownName(
+                         getTableForItemType($data['itemtype']),$data['items_id']),
+                 $data['items_id']);
       }
 
       $this->displayField(__('Request source'), "requesttypes_id",
