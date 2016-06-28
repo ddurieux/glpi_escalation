@@ -40,7 +40,7 @@
    ------------------------------------------------------------------------
  */
 
-define ("PLUGIN_ESCALATION_VERSION","0.85+1.0");
+define ("PLUGIN_ESCALATION_VERSION","0.90+1.0");
 
 // Init the hooks of escalation
 function plugin_init_escalation() {
