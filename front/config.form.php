@@ -5,7 +5,7 @@
    Plugin Escalation for GLPI
    Copyright (C) 2012-2015 by the Plugin Escalation for GLPI Development Team.
 
-   https://forge.indepnet.net/projects/escalation/
+   https://github.com/ddurieux/glpi_escalation
    ------------------------------------------------------------------------
 
    LICENSE
@@ -34,7 +34,7 @@
    @copyright Copyright (c) 2011-2015 Plugin Escalation for GLPI team
    @license   AGPL License 3.0 or (at your option) any later version
               http://www.gnu.org/licenses/agpl-3.0-standalone.html
-   @link      https://forge.indepnet.net/projects/escalation/
+   @link      https://github.com/ddurieux/glpi_escalation
    @since     2012
 
    ------------------------------------------------------------------------
