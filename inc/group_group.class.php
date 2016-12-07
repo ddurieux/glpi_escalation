@@ -218,7 +218,7 @@ class PluginEscalationGroup_Group extends CommonDBRelation {
             echo __('SLA to use', 'escalation');
             echo "</td>";
             echo "<td>";
-            Dropdown::show('Sla',array('entity' => $ticket->fields["entities_id"]));
+            Dropdown::show('Sla', array('entity' => $ticket->fields["entities_id"]));
             echo "</td>";
          } else {
             echo "<td colspan='2'>";
@@ -391,7 +391,7 @@ class PluginEscalationGroup_Group extends CommonDBRelation {
                return;
             } else {
                $group= new Group();
-               Html::header(__('Administration'),'',"maintain","ticket");
+               Html::header(__('Administration'), '', "maintain", "ticket");
 
                if (isset($_POST['dropdown__groups_id_requester'])
                        && $_POST['dropdown__groups_id_requester'] > 0) {
@@ -514,53 +514,51 @@ class PluginEscalationGroup_Group extends CommonDBRelation {
    }
 
 
-   
+
    static function notMultiple($item) {
       if ($_SESSION['glpiactiveprofile']['interface'] == 'central') {
 
          $peConfig = new PluginEscalationConfig();
-         $unique_assigned = $peConfig->getValue("unique_assigned", $item->fields['entities_id']);
-         if ($unique_assigned == '1') {
-            $ticket_User = new Ticket_User();
-            $group_Ticket = new Group_Ticket();
-            $group_User = new Group_User();
+         $unique_assigned_tech = $peConfig->getValue("unique_assigned_tech", $item->fields['entities_id']);
+         $unique_assigned_group = $peConfig->getValue("unique_assigned_group", $item->fields['entities_id']);
+         $ticket_User = new Ticket_User();
+         $group_Ticket = new Group_Ticket();
+         $group_User = new Group_User();
 
-
-            if (isset($item->input['_itil_assign'])) {
-               if ($item->input['_itil_assign']['_type'] == 'user') {
-                  $in_group = 0;
-                  $a_groups = $group_Ticket->find("`type`='2'
-                     AND `tickets_id`='".$item->fields['id']."'");
-                  $groups = Group_User::getUserGroups($item->input['_itil_assign']['users_id']);
-                  if (count($a_groups) > 0) {
-                     foreach ($a_groups as $data) {
-                        foreach($groups as $dat) {
-                           if ($dat['id'] == $data['groups_id']) {
-                              $in_group = 1;
-                           }
-                        }
-                     }
+         if (isset($item->input['_itil_assign'])) {
+            if ($item->input['_itil_assign']['_type'] == 'user') {
+//               $in_group = 0;
+//               $a_groups = $group_Ticket->find("`type`='2'
+//                  AND `tickets_id`='".$item->fields['id']."'");
+//               $groups = Group_User::getUserGroups($item->input['_itil_assign']['users_id']);
+//               if (count($a_groups) > 0) {
+//                  foreach ($a_groups as $data) {
+//                     foreach($groups as $dat) {
+//                        if ($dat['id'] == $data['groups_id']) {
+//                           $in_group = 1;
+//                        }
+//                     }
+//                  }
+//               }
+               //if ($in_group == '0') {
+               //   unset($item->input['_itil_assign']['users_id']);
+               //}
+               if ($unique_assigned_tech == '1') {
+                  $a_users = $ticket_User->find("`type`='2'
+                     AND `tickets_id`='".$item->getID()."'");
+                  foreach ($a_users as $data) {
+                     $data['_disablenotif'] = True;
+                     $ticket_User->delete($data);
                   }
-                  //if ($in_group == '0') {
-                  //   unset($item->input['_itil_assign']['users_id']);
-                  //}
-               } else if ($item->input['_itil_assign']['_type'] == 'group') {
+               }
+            } else if ($item->input['_itil_assign']['_type'] == 'group') {
+               if ($unique_assigned_group == '1') {
                   $a_groups = $group_Ticket->find("`type`='2'
                      AND `tickets_id`='".$item->getID()."'");
                   if (count($a_groups) > 0) {
                      foreach ($a_groups as $data) {
                         $data['_disablenotif'] = True;
                         $group_Ticket->delete($data);
-                     }
-                  }
-                  $a_users = $ticket_User->find("`type`='2'
-                     AND `tickets_id`='".$item->getID()."'");
-                  foreach ($a_users as $data) {
-                     if (countElementsInTable($group_User->getTable(),
-                             "`users_id`='".$data['users_id']."'
-                             AND `groups_id`='".$item->input['_itil_assign']['groups_id']."'") == '0') {
-                        $data['_disablenotif'] = True;
-                        $ticket_User->delete($data);
                      }
                   }
                }

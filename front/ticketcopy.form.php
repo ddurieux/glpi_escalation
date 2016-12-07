@@ -45,7 +45,7 @@ define('GLPI_ROOT', '../../..');
 include (GLPI_ROOT . "/inc/includes.php");
 
 
-Html::header("escalation",$_SERVER["PHP_SELF"], "plugins",
+Html::header("escalation", $_SERVER["PHP_SELF"], "plugins",
              "escalation", "ticketcopy");
 
 if (isset($_POST['add'])) {

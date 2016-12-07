@@ -125,7 +125,7 @@ class PluginEscalationConfig extends CommonDBTM {
       echo "<tr>";
       echo "<td>";
       echo "<input type='hidden' name='entities_id' value='".$entities_id."' />";
-      echo __('Unique assigned to', 'escalation')."&nbsp;:";
+      echo __('Unique assigned to technician', 'escalation')."&nbsp;:";
       echo "</td>";
       echo "<td>";
       if ($entities_id == '0') {
@@ -138,9 +138,9 @@ class PluginEscalationConfig extends CommonDBTM {
                            "+1" => __('Yes')
                            );
       }
-      $value = (is_null($this->fields['unique_assigned']) ? "NULL" : "+".$this->fields['unique_assigned']);
+      $value = (is_null($this->fields['unique_assigned_tech']) ? "NULL" : "+".$this->fields['unique_assigned_tech']);
       $value = str_replace("++", "+", $value);
-      Dropdown::showFromArray("unique_assigned", $elements, array('value' => $value));
+      Dropdown::showFromArray("unique_assigned_tech", $elements, array('value' => $value));
       echo "</td>";
 
       echo "<td>".__('Workflow', 'escalation')."&nbsp;:</td>";
@@ -165,6 +165,26 @@ class PluginEscalationConfig extends CommonDBTM {
       echo "</tr>";
 
       echo "<tr>";
+      echo "<td>";
+      echo "<input type='hidden' name='entities_id' value='".$entities_id."' />";
+      echo __('Unique assigned to technician group', 'escalation')."&nbsp;:";
+      echo "</td>";
+      echo "<td>";
+      if ($entities_id == '0') {
+         $elements = array("+0" => __('No'),
+                           "+1" => __('Yes')
+                           );
+      } else {
+         $elements = array("NULL" => __('Inheritance of the parent entity'),
+                           "+0" => __('No'),
+                           "+1" => __('Yes')
+                           );
+      }
+      $value = (is_null($this->fields['unique_assigned_group']) ? "NULL" : "+".$this->fields['unique_assigned_group']);
+      $value = str_replace("++", "+", $value);
+      Dropdown::showFromArray("unique_assigned_group", $elements, array('value' => $value));
+      echo "</td>";
+
       echo "<td>".__('Limit requester groups from writer groups', 'escalation')."&nbsp;:</td>";
       echo "<td>";
       if ($entities_id == '0') {
@@ -181,8 +201,6 @@ class PluginEscalationConfig extends CommonDBTM {
       $value = str_replace("++", "+", $value);
 
       Dropdown::showFromArray("limitgroup", $elements, array('value' => $value));
-      echo "</td>";
-      echo "<td colspan='2'>";
       echo "</td>";
       echo "</tr>";
 

@@ -164,7 +164,7 @@ class PluginEscalationTicketCopy extends CommonDBRelation {
                  __('Associated element'),
                  "items_id",
                  Dropdown::getDropdownName(
-                         getTableForItemType($data['itemtype']),$data['items_id']),
+                         getTableForItemType($data['itemtype']), $data['items_id']),
                  $data['items_id']);
       }
 

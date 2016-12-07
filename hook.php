@@ -60,14 +60,22 @@ function plugin_escalation_install() {
          $DB->query("CREATE TABLE `glpi_plugin_escalation_configs` (
             `id` int(11) NOT NULL AUTO_INCREMENT,
             `entities_id` int(11) NOT NULL DEFAULT '0',
-            `unique_assigned` varchar(255) DEFAULT NULL,
+            `unique_assigned_tech` varchar(255) DEFAULT NULL,
+            `unique_assigned_group` varchar(255) DEFAULT NULL,
             `workflow`  varchar(255) DEFAULT NULL,
             `limitgroup`  varchar(255) DEFAULT NULL,
             PRIMARY KEY (`id`)
          ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;");
          $DB->query("INSERT INTO `glpi_plugin_escalation_configs`
-            (`id` ,`entities_id` ,`unique_assigned` ,`workflow`, `limitgroup`)
-         VALUES (NULL , '0', '0', '0', '0');");
+            (`id` ,`entities_id` ,`unique_assigned_tech`, `unique_assigned_group`, `workflow`, `limitgroup`)
+         VALUES (NULL , '0', '0', '0', '0', '0');");
+      } else {
+         if (FieldExists('glpi_plugin_escalation_configs', 'unique_assigned')) {
+            // Update
+            $DB->query("ALTER TABLE `glpi_plugin_escalation_configs` CHANGE `unique_assigned` `unique_assigned_tech` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL;");
+            $DB->query("ALTER TABLE `glpi_plugin_escalation_configs` ADD `unique_assigned_group` VARCHAR(250) NULL DEFAULT NULL AFTER `unique_assigned_tech`;");
+            $DB->query("UPDATE glpi_plugin_escalation_configs SET `unique_assigned_group` = `unique_assigned_tech`");
+         }
       }
       if (!TableExists("glpi_plugin_escalation_profiles")) {
          $DB->query("CREATE TABLE `glpi_plugin_escalation_profiles` (
@@ -105,7 +113,7 @@ function plugin_escalation_uninstall() {
    $query = "SHOW TABLES;";
    $result=$DB->query($query);
    while ($data=$DB->fetch_array($result)) {
-      if (strstr($data[0],"glpi_plugin_escalation_")){
+      if (strstr($data[0], "glpi_plugin_escalation_")){
          $query_delete = "DROP TABLE `".$data[0]."`;";
          $DB->query($query_delete) or die($DB->error());
       }

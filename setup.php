@@ -40,7 +40,7 @@
    ------------------------------------------------------------------------
  */
 
-define ("PLUGIN_ESCALATION_VERSION","0.90+1.0");
+define ("PLUGIN_ESCALATION_VERSION", "0.90+1.1");
 
 // Init the hooks of escalation
 function plugin_init_escalation() {
@@ -85,8 +85,8 @@ function plugin_init_escalation() {
             // limit group
             $peConfig = new PluginEscalationConfig();
             if ($peConfig->getValue('limitgroup', $_SESSION['glpidefault_entity']) == '1') {
-               if ((strpos($_SERVER['PHP_SELF'],"ticket.form.php")
-                       OR strpos($_SERVER['PHP_SELF'],"problem.form.php"))
+               if ((strpos($_SERVER['PHP_SELF'], "ticket.form.php")
+                       OR strpos($_SERVER['PHP_SELF'], "problem.form.php"))
                        && !isset($_GET['id'])) {
 
                   $group = new Group();
@@ -97,7 +97,7 @@ function plugin_init_escalation() {
                   $_SESSION['plugin_escalation_requestergroups'] = $a_groups;
 
                }
-               if (strpos($_SERVER['PHP_SELF'],"getDropdownValue.php")) {
+               if (strpos($_SERVER['PHP_SELF'], "getDropdownValue.php")) {
                   if (isset($_GET['itemtype'])
                           && $_GET['itemtype'] == 'Group') {
                      if (count($_SESSION['plugin_escalation_requestergroups']) > 0) {
@@ -125,7 +125,7 @@ function plugin_init_escalation() {
                  'PluginEscalationTicketCopy',
                  'finishAdd'));
 
-//         $PLUGIN_HOOKS['pre_item_update']['escalation'] = array('Ticket' => array('PluginEscalationGroup_Group', 'notMultiple'));
+         $PLUGIN_HOOKS['pre_item_update']['escalation'] = array('Ticket' => array('PluginEscalationGroup_Group', 'notMultiple'));
 
 
       }
@@ -158,7 +158,7 @@ function plugin_escalation_check_config() {
    return true;
 }
 
-function plugin_escalation_haveTypeRight($type,$right) {
+function plugin_escalation_haveTypeRight($type, $right) {
    return true;
 }
 

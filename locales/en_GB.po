@@ -1,37 +1,45 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 # 
-# Translators:
+#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: GLPI Project - plugin escalation\n"
+"Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-09-29 15:24+0200\n"
-"PO-Revision-Date: 2014-09-29 13:26+0000\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: English (United Kingdom) (http://www.transifex.com/projects/p/glpi_escalation/language/en_GB/)\n"
+"POT-Creation-Date: 2016-12-07 08:48+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Language-Team: English (United Kingdom) (https://www.transifex.com/ddurieux/teams/27986/en_GB/)\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: en_GB\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: inc/config.class.php:86 inc/group_group.class.php:70
+#: setup.php:151
+msgid "Your GLPI version not compatible, require 0.85/0.90"
+msgstr ""
+
+#: inc/config.class.php:76 inc/group_group.class.php:70
 #: inc/group_group.class.php:78 inc/group_group.class.php:137
-#: inc/group_group.class.php:330 inc/profile.class.php:174
+#: inc/group_group.class.php:330 inc/profile.class.php:163
 msgid "Escalation"
 msgstr ""
 
-#: inc/config.class.php:138
-msgid "Unique assigned to"
+#: inc/config.class.php:128
+msgid "Unique assigned to technician"
 msgstr ""
 
-#: inc/config.class.php:156
+#: inc/config.class.php:146
 msgid "Workflow"
 msgstr ""
 
-#: inc/config.class.php:178
+#: inc/config.class.php:170
+msgid "Unique assigned to technician group"
+msgstr ""
+
+#: inc/config.class.php:188
 msgid "Limit requester groups from writer groups"
 msgstr ""
 
@@ -59,15 +67,15 @@ msgstr ""
 msgid "Select techicians group"
 msgstr ""
 
-#: inc/profile.class.php:179
+#: inc/profile.class.php:168
 msgid "Bypass workflow"
 msgstr ""
 
-#: inc/profile.class.php:185 inc/ticketcopy.class.php:62
+#: inc/profile.class.php:174 inc/ticketcopy.class.php:62
 msgid "Copy ticket"
 msgstr ""
 
-#: inc/profile.class.php:196
+#: inc/profile.class.php:185
 msgid "Create child ticket when escalation (workflow)"
 msgstr ""
 

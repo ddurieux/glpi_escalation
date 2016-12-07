@@ -1,39 +1,48 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 # 
-# Translators:
+#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: GLPI Project - plugin escalation\n"
+"Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-09-29 15:24+0200\n"
-"PO-Revision-Date: 2014-10-07 21:01+0000\n"
-"Last-Translator: David Durieux <d.durieux@siprossii.com>\n"
-"Language-Team: Russian (Russia) (http://www.transifex.com/projects/p/glpi_escalation/language/ru_RU/)\n"
+"POT-Creation-Date: 2016-12-07 08:48+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: David Durieux <d.durieux@siprossii.com>, 2016\n"
+"Language-Team: Russian (Russia) (https://www.transifex.com/ddurieux/teams/27986/ru_RU/)\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: ru_RU\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n%100>=11 && n%100<=14)? 2 : 3);\n"
 
-#: inc/config.class.php:86 inc/group_group.class.php:70
+#: setup.php:151
+msgid "Your GLPI version not compatible, require 0.85/0.90"
+msgstr ""
+
+#: inc/config.class.php:76 inc/group_group.class.php:70
 #: inc/group_group.class.php:78 inc/group_group.class.php:137
-#: inc/group_group.class.php:330 inc/profile.class.php:174
+#: inc/group_group.class.php:330 inc/profile.class.php:163
 msgid "Escalation"
 msgstr "Эскалация"
 
-#: inc/config.class.php:138
-msgid "Unique assigned to"
+#: inc/config.class.php:128
+msgid "Unique assigned to technician"
 msgstr ""
 
-#: inc/config.class.php:156
+#: inc/config.class.php:146
 msgid "Workflow"
 msgstr "Рабочий процесс"
 
-#: inc/config.class.php:178
-msgid "Limit requester groups from writer groups"
+#: inc/config.class.php:170
+msgid "Unique assigned to technician group"
 msgstr ""
+
+#: inc/config.class.php:188
+msgid "Limit requester groups from writer groups"
+msgstr "Отделить группу заказчиков от группы автора"
 
 #: inc/group_group.class.php:156 inc/group_group.class.php:261
 msgid "Escalation to group"
@@ -59,15 +68,15 @@ msgstr "Группа специалистов назначена"
 msgid "Select techicians group"
 msgstr "Выбрать группу специалистов"
 
-#: inc/profile.class.php:179
+#: inc/profile.class.php:168
 msgid "Bypass workflow"
 msgstr "Игнорировать рабочий процесс"
 
-#: inc/profile.class.php:185 inc/ticketcopy.class.php:62
+#: inc/profile.class.php:174 inc/ticketcopy.class.php:62
 msgid "Copy ticket"
 msgstr "Копировать заявку"
 
-#: inc/profile.class.php:196
+#: inc/profile.class.php:185
 msgid "Create child ticket when escalation (workflow)"
 msgstr "Создать дочернюю заявку при эскалации(рабочий процесс)"
 
