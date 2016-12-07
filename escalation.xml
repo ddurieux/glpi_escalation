@@ -12,7 +12,7 @@
    <name>Escalation</name>
    <key>escalation</key>
    <state>stable</state>
-   <logo>ttps://forge.indepnet.net/svn/escalation/escalation.png</logo>
+   <logo>https://raw.githubusercontent.com/ddurieux/glpi_escalation/master/escalation.png</logo>
    <description>
       <short>
          <fr><![CDATA[Escalation est un plugin qui agit sur les tickets : désactivation du mode multi techniciens et multi groupes de techniciens, gestion d'un workflow d'escalade d'un groupe de technicien à un autre]]></fr>
