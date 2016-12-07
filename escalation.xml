@@ -29,8 +29,8 @@
 	<en><![CDATA[Escalation plugin work on tickets: disable mode multi technicians and multi technicians groups, manage escalade workflow from one technician group to another]]></en>
       </long>
    </description>
-   <homepage>https://forge.indepnet.net/projects/escalation</homepage>
-   <download>https://forge.indepnet.net/projects/escalation/files</download>
+   <homepage>https://github.com/ddurieux/glpi_escalation</homepage>
+   <download>https://github.com/ddurieux/glpi_escalation/releases</download>
    <authors>
       <author>David DURIEUX</author>
    </authors>
