@@ -36,6 +36,10 @@
    </authors>
    <versions>
       <version>
+        <num>0.90+1.2</num>
+        <compatibility>0.90.x</compatibility>
+      </version>
+      <version>
         <num>0.90+1.1</num>
         <compatibility>0.90.x</compatibility>
       </version>

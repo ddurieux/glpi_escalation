@@ -3,7 +3,7 @@
 /*
    ------------------------------------------------------------------------
    Plugin Escalation for GLPI
-   Copyright (C) 2012-2015 by the Plugin Escalation for GLPI Development Team.
+   Copyright (C) 2012-2017 by the Plugin Escalation for GLPI Development Team.
 
    https://github.com/ddurieux/glpi_escalation
    ------------------------------------------------------------------------
@@ -31,7 +31,7 @@
    @author    David Durieux
    @co-author
    @comment
-   @copyright Copyright (c) 2011-2015 Plugin Escalation for GLPI team
+   @copyright Copyright (c) 2011-2017 Plugin Escalation for GLPI team
    @license   AGPL License 3.0 or (at your option) any later version
               http://www.gnu.org/licenses/agpl-3.0-standalone.html
    @link      https://github.com/ddurieux/glpi_escalation
@@ -40,7 +40,7 @@
    ------------------------------------------------------------------------
  */
 
-define ("PLUGIN_ESCALATION_VERSION", "0.90+1.1");
+define ("PLUGIN_ESCALATION_VERSION", "0.90+1.2");
 
 // Init the hooks of escalation
 function plugin_init_escalation() {
