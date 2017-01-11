@@ -452,7 +452,13 @@ class PluginEscalationGroup_Group extends CommonDBRelation {
                foreach ($_POST as $key=>$value) {
                   if (is_array($value)) {
                      foreach ($value as $keyy=>$valuee) {
-                        echo '<input type="hidden" name="'.$key.'['.$keyy.']" value="'.$valuee.'" />';
+                        if (is_array($value)) {
+                           foreach ($valuee as $keyyy=>$valueee) {
+                              echo '<input type="hidden" name="'.$key.'['.$keyy.'][]" value="'.$valueee.'" />';
+                           }
+                        } else {
+                           echo '<input type="hidden" name="'.$key.'['.$keyy.']" value="'.$valuee.'" />';
+                        }
                      }
                   } else if ($key == 'content') {
                      $value = Html::cleanPostForTextArea(Toolbox::clean_cross_side_scripting_deep($value));
