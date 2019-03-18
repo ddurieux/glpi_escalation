@@ -59,5 +59,3 @@ if ($peProfile->getFromDB($_POST['profiles_id'])) {
    $peProfile->changeprofile();
    Html::back();
 }
-
-?>

@@ -40,7 +40,7 @@
    ------------------------------------------------------------------------
  */
 
-if(!defined('GLPI_ROOT')) {
+if (!defined('GLPI_ROOT')) {
    define('GLPI_ROOT', '../..');
 }
 include (GLPI_ROOT."/inc/includes.php");
@@ -49,5 +49,3 @@ Html::header('Escalation', $_SERVER["PHP_SELF"], "plugins",
              "escalation");
 
 Html::footer();
-
-?>

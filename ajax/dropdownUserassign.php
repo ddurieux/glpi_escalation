@@ -53,7 +53,7 @@ echo "<td>";
 echo __('Technician')."&nbsp: ";
 echo "</td>";
 echo "<td>";
-$elements = array('0' => Dropdown::EMPTY_VALUE);
+$elements = ['0' => Dropdown::EMPTY_VALUE];
 $query = "SELECT * FROM `glpi_groups_users`
    WHERE `groups_id`='".$_POST['groups_id']."'";
 $result = $DB->query($query);
@@ -65,4 +65,3 @@ Dropdown::showFromArray("_users_id_assign", $elements);
 echo "</td>";
 echo "</tr>";
 echo "</table>";
-?>

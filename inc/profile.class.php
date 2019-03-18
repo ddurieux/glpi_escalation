@@ -66,9 +66,9 @@ class PluginEscalationProfile extends CommonDBTM {
     **/
    static function initProfile() {
       if (isset($_SESSION['glpiactiveprofile']['id'])) {
-         $input = array();
+         $input = [];
          $input['profiles_id'] = $_SESSION['glpiactiveprofile']['id'];
-         $input['bypassworkflow'] = NULL;
+         $input['bypassworkflow'] = null;
          $pmProfile = new self();
          $pmProfile->add($input);
       }
@@ -85,7 +85,7 @@ class PluginEscalationProfile extends CommonDBTM {
     *
     * @return varchar name of the tab(s) to display
     */
-   function getTabNameForItem(CommonGLPI $item, $withtemplate=0) {
+   function getTabNameForItem(CommonGLPI $item, $withtemplate = 0) {
 
       if ($item->getType()=='Profile') {
          return "Escalade";
@@ -104,9 +104,9 @@ class PluginEscalationProfile extends CommonDBTM {
     *
     * @return boolean true
     */
-   static function displayTabContentForItem(CommonGLPI $item, $tabnum=1, $withtemplate=0) {
+   static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0) {
 
-      if ($item->getType()=='Profile') {
+      if ($item->getType() == 'Profile') {
          $peProfile = new self();
          $peProfile->showForm($item->getID());
       }
@@ -118,11 +118,11 @@ class PluginEscalationProfile extends CommonDBTM {
    static function changeprofile() {
       if (isset($_SESSION['glpiactiveprofile']['id'])) {
          $tmp = new self();
-          if ($tmp->getFromDB($_SESSION['glpiactiveprofile']['id'])) {
-             $_SESSION["glpi_plugin_escalation_profile"] = $tmp->fields;
-          } else {
-             unset($_SESSION["glpi_plugin_escalation_profile"]);
-          }
+         if ($tmp->getFromDB($_SESSION['glpiactiveprofile']['id'])) {
+            $_SESSION["glpi_plugin_escalation_profile"] = $tmp->fields;
+         } else {
+            unset($_SESSION["glpi_plugin_escalation_profile"]);
+         }
       }
    }
 
@@ -231,11 +231,13 @@ class PluginEscalationProfile extends CommonDBTM {
          return false;
       }
 
-      $matches = array(""  => array("", "r", "w"), // ne doit pas arriver normalement
-                       "r" => array("r", "w"),
-                       "w" => array("w"),
-                       "1" => array("1"),
-                       "0" => array("0", "1")); // ne doit pas arriver non plus
+      $matches = [
+         ''  => ['', 'r', 'w'], // ne doit pas arriver normalement
+         'r' => ['r', 'w'],
+         'w' => ['w'],
+         '1' => ['1'],
+         '0' => ['0', '1']
+      ]; // ne doit pas arriver non plus
 
       if (isset ($_SESSION["glpi_plugin_escalation_profile"][$module])
           && in_array($_SESSION["glpi_plugin_escalation_profile"][$module], $matches[$right])) {
@@ -254,7 +256,7 @@ class PluginEscalationProfile extends CommonDBTM {
     *
     * @return nothing
    **/
-   function updateInDB($updates, $oldvalues=array()) {
+   function updateInDB($updates, $oldvalues = []) {
       global $DB, $CFG_GLPI;
 
       foreach ($updates as $field) {
@@ -332,5 +334,3 @@ class PluginEscalationProfile extends CommonDBTM {
       }
    }
 }
-
-?>

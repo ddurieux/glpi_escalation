@@ -54,7 +54,7 @@ class PluginEscalationConfig extends CommonDBTM {
    *@return text name of this type by language of the user connected
    *
    **/
-   static function getTypeName($nb=0) {
+   static function getTypeName($nb = 0) {
       return __('Configuration');
    }
 
@@ -68,7 +68,7 @@ class PluginEscalationConfig extends CommonDBTM {
     *
     * @return varchar name of the tab(s) to display
     */
-   function getTabNameForItem(CommonGLPI $item, $withtemplate=0) {
+   function getTabNameForItem(CommonGLPI $item, $withtemplate = 0) {
 
       if ($item->getType() == 'Entity'
               && $item->getID() > -1
@@ -87,15 +87,15 @@ class PluginEscalationConfig extends CommonDBTM {
     * @param integer $tabnum
     * @param interger $withtemplate
     *
-    * @return boolean TRUE
+    * @return boolean true
     */
-   static function displayTabContentForItem(CommonGLPI $item, $tabnum=1, $withtemplate=0) {
+   static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0) {
 
       if ($item->getType()=='Entity') {
          $peConfig = new PluginEscalationConfig();
          $peConfig->showForm($item->getID());
       }
-      return TRUE;
+      return true;
    }
 
 
@@ -109,7 +109,7 @@ class PluginEscalationConfig extends CommonDBTM {
    *@return bool true if form is ok
    *
    **/
-   function showForm($entities_id, $options=array(), $copy=array()) {
+   function showForm($entities_id, $options = [], $copy = []) {
       global $DB,$CFG_GLPI;
 
       $a_configs = $this->find("`entities_id`='".$entities_id."'", "", 1);
@@ -129,38 +129,42 @@ class PluginEscalationConfig extends CommonDBTM {
       echo "</td>";
       echo "<td>";
       if ($entities_id == '0') {
-         $elements = array("+0" => __('No'),
-                           "+1" => __('Yes')
-                           );
+         $elements = [
+            '+0' => __('No'),
+            '+1' => __('Yes')
+         ];
       } else {
-         $elements = array("NULL" => __('Inheritance of the parent entity'),
-                           "+0" => __('No'),
-                           "+1" => __('Yes')
-                           );
+         $elements = [
+            "NULL" => __('Inheritance of the parent entity'),
+            "+0" => __('No'),
+            "+1" => __('Yes')
+         ];
       }
       $value = (is_null($this->fields['unique_assigned_tech']) ? "NULL" : "+".$this->fields['unique_assigned_tech']);
       $value = str_replace("++", "+", $value);
-      Dropdown::showFromArray("unique_assigned_tech", $elements, array('value' => $value));
+      Dropdown::showFromArray("unique_assigned_tech", $elements, ['value' => $value]);
       echo "</td>";
 
       echo "<td>".__('Workflow', 'escalation')."&nbsp;:</td>";
       echo "<td>";
       if ($entities_id == '0') {
-         $elements = array("+0" => __('No'),
-                           "+1" => __('Yes')
-                           );
+         $elements = [
+            "+0" => __('No'),
+            "+1" => __('Yes')
+         ];
       } else {
-         $elements = array("NULL" => __('Inheritance of the parent entity'),
-                           "+0" => __('No'),
-                           "+1" => __('Yes')
-                           );
+         $elements = [
+            "NULL" => __('Inheritance of the parent entity'),
+            "+0" => __('No'),
+            "+1" => __('Yes')
+         ];
       }
       $value = (is_null($this->fields['workflow']) ? "NULL" : "+".$this->fields['workflow']);
       $value = str_replace("++", "+", $value);
 
       $value = (is_null($this->fields['workflow']) ? "NULL" : "+".$this->fields['workflow']);
 
-      Dropdown::showFromArray("workflow", $elements, array('value' => $value));
+      Dropdown::showFromArray("workflow", $elements, ['value' => $value]);
       echo "</td>";
       echo "</tr>";
 
@@ -171,36 +175,40 @@ class PluginEscalationConfig extends CommonDBTM {
       echo "</td>";
       echo "<td>";
       if ($entities_id == '0') {
-         $elements = array("+0" => __('No'),
-                           "+1" => __('Yes')
-                           );
+         $elements = [
+            "+0" => __('No'),
+            "+1" => __('Yes')
+         ];
       } else {
-         $elements = array("NULL" => __('Inheritance of the parent entity'),
-                           "+0" => __('No'),
-                           "+1" => __('Yes')
-                           );
+         $elements = [
+            "NULL" => __('Inheritance of the parent entity'),
+            "+0" => __('No'),
+            "+1" => __('Yes')
+         ];
       }
       $value = (is_null($this->fields['unique_assigned_group']) ? "NULL" : "+".$this->fields['unique_assigned_group']);
       $value = str_replace("++", "+", $value);
-      Dropdown::showFromArray("unique_assigned_group", $elements, array('value' => $value));
+      Dropdown::showFromArray("unique_assigned_group", $elements, ['value' => $value]);
       echo "</td>";
 
       echo "<td>".__('Limit requester groups from writer groups', 'escalation')."&nbsp;:</td>";
       echo "<td>";
       if ($entities_id == '0') {
-         $elements = array("+0" => __('No'),
-                           "+1" => __('Yes')
-                           );
+         $elements = [
+            "+0" => __('No'),
+            "+1" => __('Yes')
+         ];
       } else {
-         $elements = array("NULL" => __('Inheritance of the parent entity'),
-                           "+0" => __('No'),
-                           "+1" => __('Yes')
-                           );
+         $elements = [
+            "NULL" => __('Inheritance of the parent entity'),
+            "+0" => __('No'),
+            "+1" => __('Yes')
+         ];
       }
       $value = (is_null($this->fields['limitgroup']) ? "NULL" : "+".$this->fields['limitgroup']);
       $value = str_replace("++", "+", $value);
 
-      Dropdown::showFromArray("limitgroup", $elements, array('value' => $value));
+      Dropdown::showFromArray("limitgroup", $elements, ['value' => $value]);
       echo "</td>";
       echo "</tr>";
 
@@ -211,7 +219,7 @@ class PluginEscalationConfig extends CommonDBTM {
 
 
 
-/**
+   /**
     * Get value of config
     *
     * @global object $DB
@@ -269,5 +277,3 @@ class PluginEscalationConfig extends CommonDBTM {
    }
 
 }
-
-?>

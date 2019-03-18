@@ -43,63 +43,60 @@
 function plugin_escalation_install() {
    global $DB;
 
-   if (!TableExists("glpi_plugin_escalation_groups_groups")) {
+   $migration = new Migration(PLUGIN_ESCALATION_VERSION);
+
+   if (!$DB->TableExists("glpi_plugin_escalation_groups_groups")) {
+      $migration->displayMessage("Creation tables in database");
       $empty_sql = "plugin_escalation-empty.sql";
       $DB_file = GLPI_ROOT ."/plugins/escalation/install/mysql/$empty_sql";
-      $DBf_handle = fopen($DB_file, "rt");
-      $sql_query = fread($DBf_handle, filesize($DB_file));
-      fclose($DBf_handle);
-      foreach ( explode(";\n", "$sql_query") as $sql_line) {
-         if (Toolbox::get_magic_quotes_runtime()) $sql_line=Toolbox::stripslashes_deep($sql_line);
-         if (!empty($sql_line)) {
-            $DB->query($sql_line)/* or die($DB->error())*/;
-         }
+
+      if (!$DB->runFile($DB_file)) {
+         $migration->displayMessage("Error on creation tables in database");
       }
+   }
+   if (!$DB->TableExists("glpi_plugin_escalation_configs")) {
+      $DB->query("CREATE TABLE `glpi_plugin_escalation_configs` (
+         `id` int(11) NOT NULL AUTO_INCREMENT,
+         `entities_id` int(11) NOT NULL DEFAULT '0',
+         `unique_assigned_tech` varchar(255) DEFAULT NULL,
+         `unique_assigned_group` varchar(255) DEFAULT NULL,
+         `workflow`  varchar(255) DEFAULT NULL,
+         `limitgroup`  varchar(255) DEFAULT NULL,
+         PRIMARY KEY (`id`)
+      ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;");
+      $DB->query("INSERT INTO `glpi_plugin_escalation_configs`
+         (`id` ,`entities_id` ,`unique_assigned_tech`, `unique_assigned_group`, `workflow`, `limitgroup`)
+      VALUES (NULL , '0', '0', '0', '0', '0');");
    } else {
-      if (!TableExists("glpi_plugin_escalation_configs")) {
-         $DB->query("CREATE TABLE `glpi_plugin_escalation_configs` (
-            `id` int(11) NOT NULL AUTO_INCREMENT,
-            `entities_id` int(11) NOT NULL DEFAULT '0',
-            `unique_assigned_tech` varchar(255) DEFAULT NULL,
-            `unique_assigned_group` varchar(255) DEFAULT NULL,
-            `workflow`  varchar(255) DEFAULT NULL,
-            `limitgroup`  varchar(255) DEFAULT NULL,
-            PRIMARY KEY (`id`)
-         ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;");
-         $DB->query("INSERT INTO `glpi_plugin_escalation_configs`
-            (`id` ,`entities_id` ,`unique_assigned_tech`, `unique_assigned_group`, `workflow`, `limitgroup`)
-         VALUES (NULL , '0', '0', '0', '0', '0');");
-      } else {
-         if (FieldExists('glpi_plugin_escalation_configs', 'unique_assigned')) {
-            // Update
-            $DB->query("ALTER TABLE `glpi_plugin_escalation_configs` CHANGE `unique_assigned` `unique_assigned_tech` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL;");
-            $DB->query("ALTER TABLE `glpi_plugin_escalation_configs` ADD `unique_assigned_group` VARCHAR(250) NULL DEFAULT NULL AFTER `unique_assigned_tech`;");
-            $DB->query("UPDATE glpi_plugin_escalation_configs SET `unique_assigned_group` = `unique_assigned_tech`");
-         }
+      if ($DB->FieldExists('glpi_plugin_escalation_configs', 'unique_assigned')) {
+         // Update
+         $DB->query("ALTER TABLE `glpi_plugin_escalation_configs` CHANGE `unique_assigned` `unique_assigned_tech` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL;");
+         $DB->query("ALTER TABLE `glpi_plugin_escalation_configs` ADD `unique_assigned_group` VARCHAR(250) NULL DEFAULT NULL AFTER `unique_assigned_tech`;");
+         $DB->query("UPDATE glpi_plugin_escalation_configs SET `unique_assigned_group` = `unique_assigned_tech`");
       }
-      if (!TableExists("glpi_plugin_escalation_profiles")) {
-         $DB->query("CREATE TABLE `glpi_plugin_escalation_profiles` (
-           `profiles_id` int(11) NOT NULL DEFAULT '0',
-           `bypassworkflow` char(1) COLLATE utf8_unicode_ci DEFAULT NULL,
-           `copyticket` char(1) COLLATE utf8_unicode_ci DEFAULT NULL,
-           `copyticketonworkflow` char(1) COLLATE utf8_unicode_ci DEFAULT NULL
-         ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;");
-      }
-      if (!FieldExists('glpi_plugin_escalation_profiles', 'copyticket')) {
-         $DB->query("ALTER TABLE `glpi_plugin_escalation_profiles`
-            ADD `copyticket` CHAR( 1 ) NULL ");
-         $DB->query("ALTER TABLE `glpi_plugin_escalation_profiles`
-            ADD `copyticketonworkflow` CHAR( 1 ) NULL ");
-      }
-      if (!FieldExists("glpi_plugin_escalation_configs", "limitgroup")) {
-         $migration = new Migration(PLUGIN_ESCALATION_VERSION);
-         $migration->addField('glpi_plugin_escalation_configs',
-                              "limitgroup",
-                              "varchar(255) DEFAULT NULL");
-         $migration->migrationOneTable('glpi_plugin_escalation_configs');
-         $DB->query("UPDATE `glpi_plugin_escalation_configs`
-            SET `limitgroup` = '0' WHERE `entities_id` =1");
-      }
+   }
+   if (!$DB->TableExists("glpi_plugin_escalation_profiles")) {
+      $DB->query("CREATE TABLE `glpi_plugin_escalation_profiles` (
+         `profiles_id` int(11) NOT NULL DEFAULT '0',
+         `bypassworkflow` char(1) COLLATE utf8_unicode_ci DEFAULT NULL,
+         `copyticket` char(1) COLLATE utf8_unicode_ci DEFAULT NULL,
+         `copyticketonworkflow` char(1) COLLATE utf8_unicode_ci DEFAULT NULL
+      ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;");
+   }
+   if (!$DB->FieldExists('glpi_plugin_escalation_profiles', 'copyticket')) {
+      $DB->query("ALTER TABLE `glpi_plugin_escalation_profiles`
+         ADD `copyticket` CHAR( 1 ) NULL ");
+      $DB->query("ALTER TABLE `glpi_plugin_escalation_profiles`
+         ADD `copyticketonworkflow` CHAR( 1 ) NULL ");
+   }
+   if (!$DB->FieldExists("glpi_plugin_escalation_configs", "limitgroup")) {
+      $migration = new Migration(PLUGIN_ESCALATION_VERSION);
+      $migration->addField('glpi_plugin_escalation_configs',
+                           "limitgroup",
+                           "varchar(255) DEFAULT NULL");
+      $migration->migrationOneTable('glpi_plugin_escalation_configs');
+      $DB->query("UPDATE `glpi_plugin_escalation_configs`
+         SET `limitgroup` = '0' WHERE `entities_id` =1");
    }
    return true;
 }
@@ -113,7 +110,7 @@ function plugin_escalation_uninstall() {
    $query = "SHOW TABLES;";
    $result=$DB->query($query);
    while ($data=$DB->fetch_array($result)) {
-      if (strstr($data[0], "glpi_plugin_escalation_")){
+      if (strstr($data[0], "glpi_plugin_escalation_")) {
          $query_delete = "DROP TABLE `".$data[0]."`;";
          $DB->query($query_delete) or die($DB->error());
       }
@@ -121,5 +118,3 @@ function plugin_escalation_uninstall() {
 
    return true;
 }
-
-?>

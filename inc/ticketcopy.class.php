@@ -54,9 +54,9 @@ class PluginEscalationTicketCopy extends CommonDBRelation {
     *
     * @return varchar name of the tab(s) to display
     */
-   function getTabNameForItem(CommonGLPI $item, $withtemplate=0) {
+   function getTabNameForItem(CommonGLPI $item, $withtemplate = 0) {
 
-      if ($item->getType()=='Ticket'
+      if ($item->getType() == 'Ticket'
               && $item->getID() > 0
               && PluginEscalationProfile::haveRight("copyticket", 1)) {
          return __('Copy ticket', 'escalation');
@@ -73,15 +73,15 @@ class PluginEscalationTicketCopy extends CommonDBRelation {
     * @param integer $tabnum
     * @param interger $withtemplate
     *
-    * @return boolean TRUE
+    * @return boolean true
     */
-   static function displayTabContentForItem(CommonGLPI $item, $tabnum=1, $withtemplate=0) {
+   static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0) {
 
-      if ($item->getType()=='Ticket') {
+      if ($item->getType() == 'Ticket') {
          $peTicketCopy = new self();
          $peTicketCopy->showForm($item);
       }
-      return TRUE;
+      return true;
    }
 
 
@@ -125,8 +125,6 @@ class PluginEscalationTicketCopy extends CommonDBRelation {
 
       echo "</table>";
 
-
-
       echo "<div id='listfields' style='display:none;'>";
       echo "<table width='950' class='tab_cadre_fixe'>";
 
@@ -157,7 +155,7 @@ class PluginEscalationTicketCopy extends CommonDBRelation {
       $a_associed_items = $item_Ticket->find("`tickets_id`='".$ticket->getID()."'");
       foreach ($a_associed_items as $data) {
          $this->displayField(__('Associated element').' - '.__('Type'), "itemtype",
-            call_user_func(array($data['itemtype'], 'getTypeName')),
+            call_user_func([$data['itemtype'], 'getTypeName']),
             $data['itemtype']);
 
          $this->displayField(
@@ -239,21 +237,18 @@ class PluginEscalationTicketCopy extends CommonDBRelation {
       }
 
       // Documents
-//      $document_Item = new Document_Item();
-//      $docs = $document_Item->find("`items_id`='".$ticket->getID()."'
-//         AND `itemtype`='Ticket'");
-//      foreach ($docs as $data) {
-//         $this->displayField($LANG['document'][18], "filename",
-//            Dropdown::getDropdownName("glpi_documents", $data['documents_id']),
-//            $data['documents_id']);
-//      }
-//      // filename[]
-
-
+      // $document_Item = new Document_Item();
+      // $docs = $document_Item->find("`items_id`='".$ticket->getID()."'
+      //    AND `itemtype`='Ticket'");
+      // foreach ($docs as $data) {
+      //   $this->displayField($LANG['document'][18], "filename",
+      //       Dropdown::getDropdownName("glpi_documents", $data['documents_id']),
+      //       $data['documents_id']);
+      // }
+      // // filename[]
 
       echo "</table>";
       echo "</div>";
-
 
       echo "<table width='950' class='tab_cadre_fixe'>";
       echo "<tr class='tab_bg_3'>";
@@ -266,14 +261,13 @@ class PluginEscalationTicketCopy extends CommonDBRelation {
       Html::closeForm();
       echo "</table>";
 
-
       echo "<br/>";
       echo "<br/>";
    }
 
 
 
-   function displayField($name, $fieldname, $valuedisplay, $value='', $checked='') {
+   function displayField($name, $fieldname, $valuedisplay, $value = '', $checked = '') {
       if ($value == '') {
          $value = $valuedisplay;
       }
@@ -314,10 +308,10 @@ class PluginEscalationTicketCopy extends CommonDBRelation {
    static function createSubTicket($items_id) {
       global $CFG_GLPI;
 
-      if ($_POST['slas_id'] == 0
-              || $_POST['groupsubticket'] == 0) {
-//         return;
-      }
+      // if ($_POST['slas_id'] == 0
+      //         || $_POST['groupsubticket'] == 0) {
+         // return;
+      // }
 
       $ticket = new Ticket();
       $ticketFollowup = new TicketFollowup();
@@ -339,7 +333,7 @@ class PluginEscalationTicketCopy extends CommonDBRelation {
       $ticket->fields['slas_id'] = $_POST['slas_id'];
       $ticket->fields['date'] = date("Y-m-d H:i:s");
       $ticket->fields = Toolbox::addslashes_deep($ticket->fields);
-      foreach($ticket->fields as $key=>$value) {
+      foreach ($ticket->fields as $key => $value) {
          if ($value == '') {
             unset($ticket->fields[$key]);
          }
@@ -359,7 +353,7 @@ class PluginEscalationTicketCopy extends CommonDBRelation {
          unset($data['id']);
          $data = Toolbox::addslashes_deep($data);
          $data['tickets_id'] = $new_tickets_id;
-         foreach($data as $key=>$value) {
+         foreach ($data as $key => $value) {
             if ($value == '') {
                unset($data[$key]);
             }
@@ -396,7 +390,7 @@ class PluginEscalationTicketCopy extends CommonDBRelation {
 
       $CFG_GLPI["use_mailing"] = $use_mailing;
 
-      $input = array();
+      $input = [];
       $input['tickets_id'] = $new_tickets_id;
       $input['groups_id'] = $_POST['groupsubticket'];
       $input['type'] = 2;
@@ -432,7 +426,7 @@ class PluginEscalationTicketCopy extends CommonDBRelation {
                   unset($data['id']);
                   $data = Toolbox::addslashes_deep($data);
                   $data['tickets_id'] = $item->getID();
-                  foreach($data as $key=>$value) {
+                  foreach ($data as $key => $value) {
                      if ($value == '') {
                         unset($data[$key]);
                      }
@@ -445,5 +439,3 @@ class PluginEscalationTicketCopy extends CommonDBRelation {
       }
    }
 }
-
-?>

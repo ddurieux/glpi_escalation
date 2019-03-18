@@ -49,9 +49,9 @@ Html::header("escalation", $_SERVER["PHP_SELF"], "plugins",
              "escalation", "ticketcopy");
 
 if (isset($_POST['add'])) {
-   $a_saved = array();
-   
-   $_SESSION['plugin_escalation_ticketcopy'] = array();
+   $a_saved = [];
+
+   $_SESSION['plugin_escalation_ticketcopy'] = [];
 
    foreach ($_POST['checked'] as $name) {
       $a_saved[$name] = $_POST[$name];
@@ -89,4 +89,3 @@ if (isset($_POST['add'])) {
 Html::back();
 
 Html::footer();
-?>

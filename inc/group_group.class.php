@@ -55,7 +55,7 @@ class PluginEscalationGroup_Group extends CommonDBRelation {
     *
     * @return varchar name of the tab(s) to display
     */
-   function getTabNameForItem(CommonGLPI $item, $withtemplate=0) {
+   function getTabNameForItem(CommonGLPI $item, $withtemplate = 0) {
 
       if ($item->getType() == 'Ticket'
               && $item->getID() > 0
@@ -90,18 +90,18 @@ class PluginEscalationGroup_Group extends CommonDBRelation {
     * @param integer $tabnum
     * @param interger $withtemplate
     *
-    * @return boolean TRUE
+    * @return boolean true
     */
-   static function displayTabContentForItem(CommonGLPI $item, $tabnum=1, $withtemplate=0) {
+   static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0) {
 
-      if ($item->getType()=='Ticket') {
+      if ($item->getType() == 'Ticket') {
          $peGroup_Group = new PluginEscalationGroup_Group();
          $peGroup_Group->showGroups($item->getID());
-      } else if ($item->getType()=='Group') {
+      } else if ($item->getType() == 'Group') {
          $peGroup_Group = new PluginEscalationGroup_Group();
          $peGroup_Group->manageGroup($item->getID());
       }
-      return TRUE;
+      return true;
    }
 
 
@@ -138,7 +138,7 @@ class PluginEscalationGroup_Group extends CommonDBRelation {
       echo "</th>";
       echo "</tr>";
 
-      $a_groups = array();
+      $a_groups = [];
       $a_groups['0'] = Dropdown::EMPTY_VALUE;
       if ($groups_id != '0'
               OR PluginEscalationProfile::haveRight("bypassworkflow", 1)) {
@@ -157,15 +157,15 @@ class PluginEscalationGroup_Group extends CommonDBRelation {
          echo " </td>";
          echo "<td>";
          if (PluginEscalationProfile::haveRight("bypassworkflow", 1)) {
-            Dropdown::show('Group', array('name'      => 'group_assign',
-                                          'entity'    => $ticket->fields['entities_id']));
+            Dropdown::show('Group', ['name'      => 'group_assign',
+                                     'entity'    => $ticket->fields['entities_id']]);
 
             while ($data=$DB->fetch_array($result)) {
                $group->getFromDB($data['groups_id_destination']);
                $a_groups[$data['groups_id_destination']] = $group->getName();
             }
          } else {
-            $rand = Dropdown::showFromArray('group_assign', $a_groups, array('on_change' => 'Ext.get("useradd").hide();Ext.get("or").hide();'));
+            $rand = Dropdown::showFromArray('group_assign', $a_groups, ['on_change' => 'Ext.get("useradd").hide();Ext.get("or").hide();']);
          }
          echo "</td>";
          if ($createticketRight) {
@@ -203,7 +203,7 @@ class PluginEscalationGroup_Group extends CommonDBRelation {
          echo "</td>";
          echo "<td>";
          $user = new User();
-         $elements = array('0' => Dropdown::EMPTY_VALUE);
+         $elements = ['0' => Dropdown::EMPTY_VALUE];
          $query = "SELECT * FROM `glpi_groups_users`
             WHERE `groups_id`='".$groups_id."'";
          $result = $DB->query($query);
@@ -211,14 +211,14 @@ class PluginEscalationGroup_Group extends CommonDBRelation {
             $user->getFromDB($data['users_id']);
             $elements[$data['users_id']] = $user->getName();
          }
-         $rand = Dropdown::showFromArray("_users_id_assign", $elements, array('on_change' => 'Ext.get("groupadd").hide();Ext.get("or").hide();'));
+         $rand = Dropdown::showFromArray("_users_id_assign", $elements, ['on_change' => 'Ext.get("groupadd").hide();Ext.get("or").hide();']);
          echo "</td>";
          if ($createticketRight) {
             echo "<td>";
             echo __('SLA to use', 'escalation');
             echo "</td>";
             echo "<td>";
-            Dropdown::show('Sla', array('entity' => $ticket->fields["entities_id"]));
+            Dropdown::show('Sla', ['entity' => $ticket->fields["entities_id"]]);
             echo "</td>";
          } else {
             echo "<td colspan='2'>";
@@ -236,8 +236,8 @@ class PluginEscalationGroup_Group extends CommonDBRelation {
             echo "</td>";
             echo "<td>";
             if (PluginEscalationProfile::haveRight("bypassworkflow", 1)) {
-               Dropdown::show('Group', array('name'      => 'groupsubticket',
-                                                      'entity'    => $ticket->fields['entities_id']));
+               Dropdown::show('Group', ['name'      => 'groupsubticket',
+                                        'entity'    => $ticket->fields['entities_id']]);
             } else {
                $rand = Dropdown::showFromArray('groupsubticket', $a_groups);
             }
@@ -261,23 +261,23 @@ class PluginEscalationGroup_Group extends CommonDBRelation {
          echo __('Escalation to group', 'escalation');
          echo " </td>";
          echo "<td>";
-         $a_groups = array();
-         foreach($_SESSION['glpigroups'] as $groups_id) {
+         $a_groups = [];
+         foreach ($_SESSION['glpigroups'] as $groups_id) {
             $group->getFromDB($groups_id);
             $a_groups[$groups_id] = $group->getName();
          }
          $rand = Dropdown::showFromArray("group_assign", $a_groups);
 
-         $params = array('groups_id'   => '__VALUE__',
-                         'entity'      => $ticket->fields['entities_id'],
-                         'rand'        => $rand);
+         $params = [
+            'groups_id'   => '__VALUE__',
+            'entity'      => $ticket->fields['entities_id'],
+            'rand'        => $rand
+         ];
          Ajax::updateItemOnSelectEvent("dropdown_group_assign".$rand, "show_assignuser$rand",
                                      $CFG_GLPI["root_doc"]."/plugins/escalation/ajax/dropdownUserassign.php",
                                      $params);
 
-         if ($createticketRight) {
-
-         } else {
+         if (!$createticketRight) {
             echo "<td colspan='2'>";
             echo "</td>";
          }
@@ -287,9 +287,7 @@ class PluginEscalationGroup_Group extends CommonDBRelation {
          echo "<td colspan='2'>";
          echo "<span id='show_assignuser$rand'></span>";
          echo "</td>";
-         if ($createticketRight) {
-
-         } else {
+         if (!$createticketRight) {
             echo "<td colspan='2'>";
             echo "</td>";
          }
@@ -314,7 +312,7 @@ class PluginEscalationGroup_Group extends CommonDBRelation {
 
       $group = new Group();
       $a_groups_tmp = $group->find('', '`name`');
-      $a_groups = array();
+      $a_groups = [];
       foreach ($a_groups_tmp as $data) {
          $a_groups[$data['id']] = $data['name'];
       }
@@ -362,7 +360,7 @@ class PluginEscalationGroup_Group extends CommonDBRelation {
 
       echo "</table>";
       Html::openArrowMassives("delgroup", true);
-      Html::closeArrowMassives(array('deleteitem' => __('Delete permanently')));
+      Html::closeArrowMassives(['deleteitem' => __('Delete permanently')]);
       Html::closeForm();
    }
 
@@ -399,7 +397,7 @@ class PluginEscalationGroup_Group extends CommonDBRelation {
                }
 
                if (isset($_FILES)) {
-                  foreach ($_FILES['filename']['tmp_name'] as $numfile=>$datafile) {
+                  foreach ($_FILES['filename']['tmp_name'] as $numfile => $datafile) {
                      if ($datafile != '') {
                         $split = explode("/", $datafile);
 
@@ -423,8 +421,8 @@ class PluginEscalationGroup_Group extends CommonDBRelation {
                echo __('Group in charge of the ticket')."&nbsp;:";
                echo "</td>";
                echo "<td>";
-               $a_groups = array();
-               foreach($_SESSION['glpigroups'] as $groups_id) {
+               $a_groups = [];
+               foreach ($_SESSION['glpigroups'] as $groups_id) {
                   $group->getFromDB($groups_id);
                   $a_groups[$groups_id] = $group->getName();
 
@@ -439,9 +437,11 @@ class PluginEscalationGroup_Group extends CommonDBRelation {
                asort($a_groups);
                $rand = Dropdown::showFromArray("_groups_id_assign_escalation", $a_groups);
 
-               $params = array('groups_id'   => '__VALUE__',
-                               'entity'      => $_POST['entities_id'],
-                               'rand'        => $rand);
+               $params = [
+                  'groups_id'   => '__VALUE__',
+                  'entity'      => $_POST['entities_id'],
+                  'rand'        => $rand
+               ];
                Ajax::updateItemOnSelectEvent("dropdown__groups_id_assign".$rand, "show_assignuser$rand",
                                            $CFG_GLPI["root_doc"]."/plugins/escalation/ajax/dropdownUserassign.php",
                                            $params);
@@ -449,11 +449,11 @@ class PluginEscalationGroup_Group extends CommonDBRelation {
 
                echo "<tr class='tab_bg_1'>";
                echo "<td colspan='2'>";
-               foreach ($_POST as $key=>$value) {
+               foreach ($_POST as $key => $value) {
                   if (is_array($value)) {
-                     foreach ($value as $keyy=>$valuee) {
+                     foreach ($value as $keyy => $valuee) {
                         if (is_array($value)) {
-                           foreach ($valuee as $keyyy=>$valueee) {
+                           foreach ($valuee as $keyyy => $valueee) {
                               echo '<input type="hidden" name="'.$key.'['.$keyy.'][]" value="'.$valueee.'" />';
                            }
                         } else {
@@ -533,19 +533,19 @@ class PluginEscalationGroup_Group extends CommonDBRelation {
 
          if (isset($item->input['_itil_assign'])) {
             if ($item->input['_itil_assign']['_type'] == 'user') {
-//               $in_group = 0;
-//               $a_groups = $group_Ticket->find("`type`='2'
-//                  AND `tickets_id`='".$item->fields['id']."'");
-//               $groups = Group_User::getUserGroups($item->input['_itil_assign']['users_id']);
-//               if (count($a_groups) > 0) {
-//                  foreach ($a_groups as $data) {
-//                     foreach($groups as $dat) {
-//                        if ($dat['id'] == $data['groups_id']) {
-//                           $in_group = 1;
-//                        }
-//                     }
-//                  }
-//               }
+               //               $in_group = 0;
+               //               $a_groups = $group_Ticket->find("`type`='2'
+               //                  AND `tickets_id`='".$item->fields['id']."'");
+               //               $groups = Group_User::getUserGroups($item->input['_itil_assign']['users_id']);
+               //               if (count($a_groups) > 0) {
+               //                  foreach ($a_groups as $data) {
+               //                     foreach ($groups as $dat) {
+               //                        if ($dat['id'] == $data['groups_id']) {
+               //                           $in_group = 1;
+               //                        }
+               //                     }
+               //                  }
+               //               }
                //if ($in_group == '0') {
                //   unset($item->input['_itil_assign']['users_id']);
                //}
@@ -553,7 +553,7 @@ class PluginEscalationGroup_Group extends CommonDBRelation {
                   $a_users = $ticket_User->find("`type`='2'
                      AND `tickets_id`='".$item->getID()."'");
                   foreach ($a_users as $data) {
-                     $data['_disablenotif'] = True;
+                     $data['_disablenotif'] = true;
                      $ticket_User->delete($data);
                   }
                }
@@ -563,7 +563,7 @@ class PluginEscalationGroup_Group extends CommonDBRelation {
                      AND `tickets_id`='".$item->getID()."'");
                   if (count($a_groups) > 0) {
                      foreach ($a_groups as $data) {
-                        $data['_disablenotif'] = True;
+                        $data['_disablenotif'] = true;
                         $group_Ticket->delete($data);
                      }
                   }
@@ -586,5 +586,3 @@ class PluginEscalationGroup_Group extends CommonDBRelation {
       }
    }
 }
-
-?>

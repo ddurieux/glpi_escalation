@@ -60,70 +60,73 @@ if (isset($_POST['update']) && $_POST['group_assign'] > 0) {
    $_SESSION['glpiactiveprofile']['ticket'] = 128031;
 
    // Add group
-      $ticket = new Ticket();
-      $input = array();
-      $input['id'] = $_POST['tickets_id'];
-      $input['_itil_assign'] = array('_type'=>'group','groups_id'=>$_POST['group_assign']);
-      $ticket->getFromDB($_POST['tickets_id']);
-      if ($ticket->fields['status'] == Ticket::WAITING) {
-         $input['status'] = Ticket::ASSIGNED;
+   $ticket = new Ticket();
+   $input = [];
+   $input['id'] = $_POST['tickets_id'];
+   $input['_itil_assign'] = ['_type' => 'group','groups_id'=>$_POST['group_assign']];
+   $ticket->getFromDB($_POST['tickets_id']);
+   if ($ticket->fields['status'] == Ticket::WAITING) {
+      $input['status'] = Ticket::ASSIGNED;
+   }
+   $input['_disablenotif'] = true;
+   $ticket->update($input);
+
+
+   // Check if user assigned is in this new group
+   $ticket_user = new Ticket_User();
+
+   $a_users = $ticket_user->find("`tickets_id`='".$_POST['tickets_id']."'
+      AND `type`='2'");
+   foreach ($a_users as $data) {
+      $query = "SELECT * FROM `glpi_groups_users`
+         WHERE `groups_id`='".$_POST['group_assign']."'
+            AND `users_id`='".$data['users_id']."'
+         LIMIT 1";
+      $result = $DB->query($query);
+      if ($DB->numrows($result) == '0') {
+         $ticket_user->delete($data);
+         Event::log($_POST['tickets_id'], "ticket", 4,
+            "tracking", $_SESSION["glpiname"]." ".__('Deletion of an actor to the ticket'));
       }
-      $input['_disablenotif'] = true;
-      $ticket->update($input);
-
-
-      // Check if user assigned is in this new group
-      $ticket_user = new Ticket_User();
-
-      $a_users = $ticket_user->find("`tickets_id`='".$_POST['tickets_id']."'
-         AND `type`='2'");
-      foreach ($a_users as $data) {
-         $query = "SELECT * FROM `glpi_groups_users`
-            WHERE `groups_id`='".$_POST['group_assign']."'
-               AND `users_id`='".$data['users_id']."'
-            LIMIT 1";
-         $result = $DB->query($query);
-         if ($DB->numrows($result) == '0') {
-            $ticket_user->delete($data);
-            Event::log($_POST['tickets_id'], "ticket", 4,
-              "tracking", $_SESSION["glpiname"]." ".__('Deletion of an actor to the ticket'));
-         }
-      }
-      $_SESSION['glpiactiveprofile']['ticket'] = $assign_ticket_right;
+   }
+   $_SESSION['glpiactiveprofile']['ticket'] = $assign_ticket_right;
 
    // delete group
-      $group_ticket = new Group_Ticket();
+   $group_ticket = new Group_Ticket();
 
-      $a_groups = $group_ticket->find("`tickets_id`='".$_POST['tickets_id']."'
-         AND `type`='2'");
-      foreach ($a_groups as $data) {
-         if ($data['groups_id'] != $_POST['group_assign']) {
-            $group_ticket->delete($data);
-            Event::log($_POST['tickets_id'], "ticket", 4, "tracking",
-                       $_SESSION["glpiname"]." ".__('Deletion of an actor to the ticket'));
-         }
+   $a_groups = $group_ticket->find("`tickets_id`='".$_POST['tickets_id']."'
+      AND `type`='2'");
+   foreach ($a_groups as $data) {
+      if ($data['groups_id'] != $_POST['group_assign']) {
+         $group_ticket->delete($data);
+         Event::log($_POST['tickets_id'], "ticket", 4, "tracking",
+                     $_SESSION["glpiname"]." ".__('Deletion of an actor to the ticket'));
       }
+   }
    Html::back();
 } else if (isset($_POST['update']) AND $_POST['_users_id_assign'] > 0) {
    $assign_ticket_right = $_SESSION['glpiactiveprofile']['ticket'];
    $_SESSION['glpiactiveprofile']['ticket'] = 128031;
    // Add
    $ticket = new Ticket();
-   $input = array();
+   $input = [];
    $input['id'] = $_POST['tickets_id'];
-   $input['_itil_assign'] = array('_type'=>'user','users_id'=>$_POST['_users_id_assign']);
+   $input['_itil_assign'] = [
+      '_type'    => 'user',
+      'users_id' => $_POST['_users_id_assign']
+   ];
    $ticket->update($input);
 
-      $ticket_user = new Ticket_User();
-      $a_users = $ticket_user->find("`tickets_id`='".$_POST['tickets_id']."'
-         AND `type`='2'");
-      foreach ($a_users as $data) {
-         if ($data['users_id'] != $_POST['_users_id_assign']) {
-            $ticket_user->delete($data);
-            Event::log($_POST['tickets_id'], "ticket", 4,
-              "tracking", $_SESSION["glpiname"]." ".__('Deletion of an actor to the ticket'));
-         }
+   $ticket_user = new Ticket_User();
+   $a_users = $ticket_user->find("`tickets_id`='".$_POST['tickets_id']."'
+      AND `type`='2'");
+   foreach ($a_users as $data) {
+      if ($data['users_id'] != $_POST['_users_id_assign']) {
+         $ticket_user->delete($data);
+         Event::log($_POST['tickets_id'], "ticket", 4,
+            "tracking", $_SESSION["glpiname"]." ".__('Deletion of an actor to the ticket'));
       }
+   }
    $_SESSION['glpiactiveprofile']['ticket'] = $assign_ticket_right;
    Html::back();
 } else if (isset($_POST['addgroup'])) {
@@ -133,7 +136,7 @@ if (isset($_POST['update']) && $_POST['group_assign'] > 0) {
 } else if (isset($_POST['deleteitem'])) {
    $peGroup_Group = new PluginEscalationGroup_Group();
    foreach ($_POST['delgroup'] as $id) {
-      $peGroup_Group->delete(array('id'=>$id));
+      $peGroup_Group->delete(['id' => $id]);
    }
 
    Html::back();
@@ -141,4 +144,3 @@ if (isset($_POST['update']) && $_POST['group_assign'] > 0) {
 Html::back();
 
 Html::footer();
-?>
