@@ -18,7 +18,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: setup.php:151
-msgid "Your GLPI version not compatible, require 0.85/0.90"
+msgid "Your GLPI version not compatible, require 0.85/9.4"
 msgstr ""
 
 #: inc/config.class.php:76 inc/group_group.class.php:70
