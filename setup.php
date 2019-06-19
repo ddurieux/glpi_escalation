@@ -40,7 +40,7 @@
    ------------------------------------------------------------------------
  */
 
-define ("PLUGIN_ESCALATION_VERSION", "9.3+1.0");
+define ("PLUGIN_ESCALATION_VERSION", "9.4+1.0");
 
 // Init the hooks of escalation
 function plugin_init_escalation() {
@@ -141,7 +141,7 @@ function plugin_version_escalation() {
       'author'         =>'<a href="mailto:david@durieux.family">David DURIEUX</a>'
                         .'& <a href="mailto:dcs.glpi@dcsit-group.com">DCS company</a>',
       'homepage'       =>'',
-      'minGlpiVersion' => '9.3'
+      'minGlpiVersion' => '9.4'
    ];
 }
 
@@ -149,7 +149,7 @@ function plugin_version_escalation() {
 // Optional : check prerequisites before install : may print errors or add to message after redirect
 function plugin_escalation_check_prerequisites() {
 
-   if (version_compare(GLPI_VERSION, '9.3', 'lt') || version_compare(GLPI_VERSION, '9.4', 'ge')) {
+   if (version_compare(GLPI_VERSION, '9.3', 'lt') || version_compare(GLPI_VERSION, '9.5', 'ge')) {
       echo __('Your GLPI version not compatible, require 0.85/0.90', 'escalation');
       return false;
    }
