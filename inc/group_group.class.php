@@ -500,18 +500,20 @@ class PluginEscalationGroup_Group extends CommonDBRelation {
 
       $tech = false;
 
-      if (countElementsInTable("glpi_tickets_users",
-              "`tickets_id`='".$tickets_id."'
-               AND `type`='2'
-               AND `users_id`='".$_SESSION['glpiID']."'") > 0) {
+      if (countElementsInTable("glpi_tickets_users", [
+         'tickets_id' => $tickets_id,
+         'type'       => 2,
+         'users_id'   => $_SESSION['glpiID']
+      ]) > 0) {
          $tech = true;
       }
       $a_groups = $group_User->getUserGroups($_SESSION['glpiID']);
       foreach ($a_groups as $data) {
-         if (countElementsInTable("glpi_groups_tickets",
-                 "`tickets_id`='".$tickets_id."'
-                  AND `type`='2'
-                  AND `groups_id`='".$data['id']."'") > 0) {
+         if (countElementsInTable("glpi_groups_tickets", [
+            'tickets_id' => $tickets_id,
+            'type'       => 2,
+            'groups_id' => $data['id']
+         ]) > 0) {
             $tech = true;
          }
       }
