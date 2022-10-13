@@ -112,7 +112,7 @@ class PluginEscalationConfig extends CommonDBTM {
    function showForm($entities_id, $options = [], $copy = []) {
       global $DB,$CFG_GLPI;
 
-      $a_configs = $this->find("`entities_id`='".$entities_id."'", "", 1);
+      $a_configs = $this->find(['entities_id' => $entities_id], [], 1);
       if (count($a_configs) == '1') {
          $a_config = current($a_configs);
          $this->getFromDB($a_config['id']);
@@ -264,14 +264,11 @@ class PluginEscalationConfig extends CommonDBTM {
    function getValue($name, $entities_id) {
       global $DB;
 
-      $query = "SELECT `".$name."` FROM `".$this->getTable()."`
-         WHERE `entities_id`='".$entities_id."'
-            AND `".$name."` IS NOT NULL
-         LIMIT 1";
-      $result = $DB->query($query);
-      if ($DB->numrows($result) > 0) {
-         $data = $DB->fetch_assoc($result);
-         return $data[$name];
+      $values = $this->find(['entities_id' => $entities_id, 'NOT' => [$name => NULL]], [], 1);
+      if (count($values) > 0) {
+         foreach ($values as $value) {
+            return $value[$name];
+         }
       }
       return $this->getValueAncestor($name, $entities_id);
    }

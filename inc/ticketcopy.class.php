@@ -152,7 +152,7 @@ class PluginEscalationTicketCopy extends CommonDBRelation {
 
       //// *************************************
       $item_Ticket = new Item_Ticket();
-      $a_associed_items = $item_Ticket->find("`tickets_id`='".$ticket->getID()."'");
+      $a_associed_items = $item_Ticket->find(['tickets_id' => $ticket->getID()]);
       foreach ($a_associed_items as $data) {
          $this->displayField(__('Associated element').' - '.__('Type'), "itemtype",
             call_user_func([$data['itemtype'], 'getTypeName']),
@@ -176,8 +176,7 @@ class PluginEscalationTicketCopy extends CommonDBRelation {
 
       $ticket_User = new Ticket_User();
 
-      $a_ticket_users = $ticket_User->find("`tickets_id`='".$ticket->getID()."'
-         AND `type`='1'");
+      $a_ticket_users = $ticket_User->find(['tickets_id' => $ticket->getID(), 'type' => 1]);
       foreach ($a_ticket_users as $data) {
          $name = '';
          if ($data['users_id'] == 0) {
@@ -191,8 +190,7 @@ class PluginEscalationTicketCopy extends CommonDBRelation {
 
       $group_Ticket = new Group_Ticket();
 
-      $a_group_tickets = $group_Ticket->find("`tickets_id`='".$ticket->getID()."'
-         AND `type`='1'");
+      $a_group_tickets = $group_Ticket->find(['tickets_id' => $ticket->getID(), 'type' => 1]);
       foreach ($a_group_tickets as $data) {
          $this->displayField(__('Requester group'), "_groups_id_requester",
             Dropdown::getDropdownName('glpi_groups', $data['groups_id']), $data['groups_id']);
@@ -201,8 +199,7 @@ class PluginEscalationTicketCopy extends CommonDBRelation {
       // Techs
       $peConfig = new PluginEscalationConfig();
       if ($peConfig->getValue('workflow', $ticket->fields['entities_id']) == '0') {
-         $a_ticket_uers = $ticket_User->find("`tickets_id`='".$ticket->getID()."'
-            AND `type`='2'");
+         $a_ticket_uers = $ticket_User->find(['tickets_id' => $ticket->getID(), 'type' => 2]);
          foreach ($a_ticket_uers as $data) {
             $name = '';
             if ($data['users_id'] == 0) {
@@ -214,8 +211,7 @@ class PluginEscalationTicketCopy extends CommonDBRelation {
                $name, $data['id']);
          }
 
-         $a_group_tickets = $group_Ticket->find("`tickets_id`='".$ticket->getID()."'
-            AND `type`='2'");
+         $a_group_tickets = $group_Ticket->find(['tickets_id' => $ticket->getID(), 'type' => 2]);
          foreach ($a_group_tickets as $data) {
             $this->displayField(__('Group in charge of the ticket'), "_groups_id_assign",
                Dropdown::getDropdownName('glpi_groups', $data['groups_id']), $data['groups_id']);
@@ -223,14 +219,14 @@ class PluginEscalationTicketCopy extends CommonDBRelation {
       }
 
       $ticketFollowup= new TicketFollowup();
-      $followups = $ticketFollowup->find("`tickets_id`='".$ticket->getID()."'");
+      $followups = $ticketFollowup->find(['tickets_id' => $ticket->getID()]);
       foreach ($followups as $data) {
          $this->displayField(__('Follow-up'), "followup-".$data['id'],
             $data['content'], $data['id']);
       }
 
       $ticketTask= new TicketTask();
-      $tasks = $ticketTask->find("`tickets_id`='".$ticket->getID()."'");
+      $tasks = $ticketTask->find(['tickets_id' => $ticket->getID()]);
       foreach ($tasks as $data) {
          $this->displayField(__('Task'), "task-".$data['id'],
             $data['content'], $data['id']);
@@ -340,7 +336,7 @@ class PluginEscalationTicketCopy extends CommonDBRelation {
       }
       $new_tickets_id = $ticket->add($ticket->fields);
 
-      $a_followups = $ticketFollowup->find("`tickets_id`='".$items_id."'", "`id`");
+      $a_followups = $ticketFollowup->find(['tickets_id' => $items_id], ['id']);
       foreach ($a_followups as $data) {
          unset($data['id']);
          $data = Toolbox::addslashes_deep($data);
@@ -348,7 +344,7 @@ class PluginEscalationTicketCopy extends CommonDBRelation {
          $ticketFollowup->add($data);
       }
 
-      $a_tasks = $ticketTask->find("`tickets_id`='".$items_id."'", "`id`");
+      $a_tasks = $ticketTask->find(['tickets_id' => $items_id], ['id']);
       foreach ($a_tasks as $data) {
          unset($data['id']);
          $data = Toolbox::addslashes_deep($data);
@@ -361,8 +357,7 @@ class PluginEscalationTicketCopy extends CommonDBRelation {
          $ticketTask->add($data);
       }
 
-      $a_documents = $document_Item->find("`items_id`='".$items_id."'
-         AND `itemtype`='Ticket'", "`id`");
+      $a_documents = $document_Item->find(['items_id' => $items_id, 'itemtype' => 'Ticket'], ['id']);
       foreach ($a_documents as $data) {
          unset($data['id']);
          $data = Toolbox::addslashes_deep($data);
@@ -370,8 +365,7 @@ class PluginEscalationTicketCopy extends CommonDBRelation {
          $document_Item->add($data);
       }
 
-      $a_ticketusers = $ticket_User->find("`tickets_id`='".$items_id."'
-         AND `type`='1'", "`id`");
+      $a_ticketusers = $ticket_User->find(['tickets_id' => $items_id, 'type' => 1], ['id']);
       foreach ($a_ticketusers as $data) {
          unset($data['id']);
          $data = Toolbox::addslashes_deep($data);
@@ -379,8 +373,7 @@ class PluginEscalationTicketCopy extends CommonDBRelation {
          $ticket_User->add($data);
       }
 
-      $a_ticketgroups = $group_Ticket->find("`tickets_id`='".$items_id."'
-         AND `type`='1'", "`id`");
+      $a_ticketgroups = $group_Ticket->find(['tickets_id' => $items_id, 'type' => 1], ['id']);
       foreach ($a_ticketgroups as $data) {
          unset($data['id']);
          $data = Toolbox::addslashes_deep($data);
@@ -408,7 +401,7 @@ class PluginEscalationTicketCopy extends CommonDBRelation {
          if (isset($_SESSION['plugin_escalation_ticketcopy']['followup'])) {
             $ticketFollowup = new TicketFollowup();
             foreach ($_SESSION['plugin_escalation_ticketcopy']['followup'] as $follows_id) {
-               $a_followups = $ticketFollowup->find("`id`='".$follows_id."'");
+               $a_followups = $ticketFollowup->find(['id' => $follows_id]);
                foreach ($a_followups as $data) {
                   unset($data['id']);
                   $data = Toolbox::addslashes_deep($data);
@@ -421,7 +414,7 @@ class PluginEscalationTicketCopy extends CommonDBRelation {
          if (isset($_SESSION['plugin_escalation_ticketcopy']['task'])) {
             $ticketTask = new TicketTask();
             foreach ($_SESSION['plugin_escalation_ticketcopy']['task'] as $tasks_id) {
-               $a_tasks = $ticketTask->find("`id`='".$tasks_id."'", "`id`");
+               $a_tasks = $ticketTask->find(['id' => $tasks_id], ['id']);
                foreach ($a_tasks as $data) {
                   unset($data['id']);
                   $data = Toolbox::addslashes_deep($data);

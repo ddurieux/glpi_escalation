@@ -75,8 +75,7 @@ if (isset($_POST['update']) && $_POST['group_assign'] > 0) {
    // Check if user assigned is in this new group
    $ticket_user = new Ticket_User();
 
-   $a_users = $ticket_user->find("`tickets_id`='".$_POST['tickets_id']."'
-      AND `type`='2'");
+   $a_users = $ticket_user->find(['tickets_id' => $_POST['tickets_id'], 'type' => 2]);
    foreach ($a_users as $data) {
       $query = "SELECT * FROM `glpi_groups_users`
          WHERE `groups_id`='".$_POST['group_assign']."'
@@ -94,8 +93,7 @@ if (isset($_POST['update']) && $_POST['group_assign'] > 0) {
    // delete group
    $group_ticket = new Group_Ticket();
 
-   $a_groups = $group_ticket->find("`tickets_id`='".$_POST['tickets_id']."'
-      AND `type`='2'");
+   $a_groups = $group_ticket->find(['tickets_id' => $_POST['tickets_id'], 'type' => 2]);
    foreach ($a_groups as $data) {
       if ($data['groups_id'] != $_POST['group_assign']) {
          $group_ticket->delete($data);
@@ -118,8 +116,7 @@ if (isset($_POST['update']) && $_POST['group_assign'] > 0) {
    $ticket->update($input);
 
    $ticket_user = new Ticket_User();
-   $a_users = $ticket_user->find("`tickets_id`='".$_POST['tickets_id']."'
-      AND `type`='2'");
+   $a_users = $ticket_user->find(['tickets_id' => $_POST['tickets_id'], 'type' => 2]);
    foreach ($a_users as $data) {
       if ($data['users_id'] != $_POST['_users_id_assign']) {
          $ticket_user->delete($data);

@@ -311,7 +311,7 @@ class PluginEscalationGroup_Group extends CommonDBRelation {
       global $DB,$CFG_GLPI;
 
       $group = new Group();
-      $a_groups_tmp = $group->find('', '`name`');
+      $a_groups_tmp = $group->find([], ['name']);
       $a_groups = [];
       foreach ($a_groups_tmp as $data) {
          $a_groups[$data['id']] = $data['name'];
@@ -552,8 +552,7 @@ class PluginEscalationGroup_Group extends CommonDBRelation {
                //   unset($item->input['_itil_assign']['users_id']);
                //}
                if ($unique_assigned_tech == '1') {
-                  $a_users = $ticket_User->find("`type`='2'
-                     AND `tickets_id`='".$item->getID()."'");
+                  $a_users = $ticket_User->find(['type' => 2, 'tickets_id' => $item->getID()]);
                   foreach ($a_users as $data) {
                      $data['_disablenotif'] = true;
                      $ticket_User->delete($data);
@@ -561,8 +560,7 @@ class PluginEscalationGroup_Group extends CommonDBRelation {
                }
             } else if ($item->input['_itil_assign']['_type'] == 'group') {
                if ($unique_assigned_group == '1') {
-                  $a_groups = $group_Ticket->find("`type`='2'
-                     AND `tickets_id`='".$item->getID()."'");
+                  $a_groups = $group_Ticket->find(['type' => 2, 'tickets_id' => $item->getID()]);
                   if (count($a_groups) > 0) {
                      foreach ($a_groups as $data) {
                         $data['_disablenotif'] = true;
