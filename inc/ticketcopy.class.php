@@ -285,7 +285,7 @@ class PluginEscalationTicketCopy extends CommonDBRelation {
       echo $name;
       echo "</td>";
       echo "<td>";
-      echo $valuedisplay;
+      echo Toolbox::getHtmlToDisplay($valuedisplay);
       if ($type == 'checkbox') {
          $value = Html::cleanInputText(Toolbox::clean_cross_side_scripting_deep(stripslashes($value)));
          echo '<input type="hidden" name="'.$fieldname.
